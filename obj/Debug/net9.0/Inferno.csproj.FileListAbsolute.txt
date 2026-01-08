@@ -146,3 +146,5 @@ C:\Users\YanJo\TreinoCRUD\Inferno\obj\Debug\net9.0\refint\Inferno.dll
 C:\Users\YanJo\TreinoCRUD\Inferno\obj\Debug\net9.0\Inferno.pdb
 C:\Users\YanJo\TreinoCRUD\Inferno\obj\Debug\net9.0\Inferno.genruntimeconfig.cache
 C:\Users\YanJo\TreinoCRUD\Inferno\obj\Debug\net9.0\ref\Inferno.dll
+C:\Users\YanJo\TreinoCRUD\Inferno\obj\Debug\net9.0\Inferno.sourcelink.json
+C:\Users\YanJo\TreinoCRUD\Inferno\bin\Debug\net9.0\demons.json

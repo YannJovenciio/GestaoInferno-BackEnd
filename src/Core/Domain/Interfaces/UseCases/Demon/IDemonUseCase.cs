@@ -1,17 +1,20 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Inferno.src.Core.Application.DTOs;
 using Inferno.src.Core.Application.DTOs.Request.Demon;
-using Microsoft.AspNetCore.Mvc.ActionConstraints;
 
 namespace Inferno.src.Core.Domain.Interfaces.UseCases.Demon
 {
     public interface IDemonUseCase
     {
-        Task<(DemonResponse, string message)> CreateAsync(DemonInput input);
-        Task<(List<DemonResponse>, string message)> CreateManyAsync(DemonInput[] inputs);
-        Task<(DemonResponse, string message)> GetByIdAsync(Guid id);
+        Task<(DemonResponse? response, string message)> CreateAsync(DemonInput input);
+        Task<(List<DemonResponse>? responses, string message)> CreateManyAsync(
+            List<DemonInput> inputs
+        );
+        Task<(DemonResponse? response, string message)> GetByIdAsync(Guid id);
+        Task<(List<DemonResponse>? responses, string message)> GetAllAsync();
+        Task<(List<DemonResponse>? responses, string message)> GetAllWithFiltersAsync(
+            Guid? categoryId,
+            string? name,
+            DateTime? createdAt
+        );
     }
 }

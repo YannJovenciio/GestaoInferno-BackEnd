@@ -19,22 +19,19 @@ namespace Inferno.Migrations
 
             modelBuilder.Entity("Inferno.src.Core.Domain.Entities.Category", b =>
                 {
-                    b.Property<Guid>("IdCategoria")
+                    b.Property<Guid>("IdCategory")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .HasColumnName("IdCategory");
 
-                    b.Property<Guid?>("DemonIdDemon")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("NomeCategoria")
+                    b.Property<string>("CategoryName")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .HasColumnName("CategoryName");
 
-                    b.HasKey("IdCategoria");
+                    b.HasKey("IdCategory");
 
-                    b.HasIndex("DemonIdDemon");
-
-                    b.ToTable("Categories");
+                    b.ToTable("Category", (string)null);
                 });
 
             modelBuilder.Entity("Inferno.src.Core.Domain.Entities.Cavern", b =>
@@ -60,26 +57,31 @@ namespace Inferno.Migrations
                 {
                     b.Property<Guid>("IdDemon")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .HasColumnName("IdDemon");
 
                     b.Property<Guid>("CategoryId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .HasColumnName("CategoryId");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .HasColumnName("CreatedAt");
 
                     b.Property<string>("DemonName")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .HasColumnName("DemonName");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .HasColumnName("UpdatedAt");
 
                     b.HasKey("IdDemon");
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Demons");
+                    b.ToTable("Demon", (string)null);
                 });
 
             modelBuilder.Entity("Inferno.src.Core.Domain.Entities.Hell", b =>
@@ -188,13 +190,6 @@ namespace Inferno.Migrations
                     b.ToTable("Souls");
                 });
 
-            modelBuilder.Entity("Inferno.src.Core.Domain.Entities.Category", b =>
-                {
-                    b.HasOne("Inferno.src.Core.Domain.Entities.Demon", null)
-                        .WithMany("Categories")
-                        .HasForeignKey("DemonIdDemon");
-                });
-
             modelBuilder.Entity("Inferno.src.Core.Domain.Entities.Demon", b =>
                 {
                     b.HasOne("Inferno.src.Core.Domain.Entities.Category", "Category")
@@ -276,8 +271,6 @@ namespace Inferno.Migrations
 
             modelBuilder.Entity("Inferno.src.Core.Domain.Entities.Demon", b =>
                 {
-                    b.Navigation("Categories");
-
                     b.Navigation("Persecutions");
                 });
 

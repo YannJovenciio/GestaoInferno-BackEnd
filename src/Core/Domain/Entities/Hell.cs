@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations.Schema;
-
 namespace Inferno.src.Core.Domain.Entities
 {
     public class Hell

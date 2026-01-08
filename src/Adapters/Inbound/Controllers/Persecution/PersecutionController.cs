@@ -1,45 +1,61 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using Inferno.src.Core.Application.DTOs.Request.Persecution;
 using Inferno.src.Core.Domain.Interfaces.UseCases;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace Inferno.src.Adapters.Inbound.Persecution
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class PersecutionController : Controller
     {
         private readonly ILogger<PersecutionController> _logger;
-        private readonly IPersecutionUseCase _persecution;
+        private readonly IPersecutionUseCase _persecutionUseCase;
 
         public PersecutionController(
             ILogger<PersecutionController> logger,
             IPersecutionUseCase persecution
         )
         {
-            _persecution = persecution;
+            _persecutionUseCase = persecution;
             _logger = logger;
         }
 
-        [HttpPost]
-        [Route("CreatePersecutiom")]
-        public async Task<IActionResult> CreatePersecution(Guid idDemon, Guid idSoul)
+        [HttpPost("CreatePersecution")]
+        public async Task<IActionResult> CreatePersecution([FromBody] PersecutionRequest request)
         {
-            if (idDemon == null | idSoul == null)
+            _logger.LogInformation(
+                $"received request to create persecution with Demon id:{request.IdDemon} and Soul id:{request.IdSoul}"
+            );
+            if (!ModelState.IsValid)
             {
-                return BadRequest("Invalid arguments");
+                return BadRequest("invalid arguments");
             }
-            _logger.LogInformation($"Received idDemon:{idDemon} and idSoul:{idSoul}");
-            var (message, response) = await _persecution.CreatePersecution(idDemon, idSoul);
+            var (message, response) = await _persecutionUseCase.CreatePersecution(request);
+            _logger.LogInformation(
+                $"sucessfuly created persecution with Demon id:{request.IdDemon} and Soul id:{request.IdSoul}"
+            );
             return new OkObjectResult(new { data = response, message });
         }
 
-        // [HttpGet]
-        // [Route("GetAllPersecution")]
-        // public async Task<IActionResult> GetAllPersecution() { }
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> GetAll()
+        {
+            _logger.LogInformation("receveid request to get all persecutions");
+            var (response, message) = await _persecutionUseCase.GetAllPersecutions();
+            _logger.LogInformation($"sucessfuly found {response.Count} persecutions");
+            return new OkObjectResult(new { data = response, message });
+        }
+
+        [HttpGet("GetAllF")]
+        public async Task<IActionResult> GetAllF(
+            [FromQuery] Guid? idDemon,
+            [FromQuery] Guid? idSoul
+        )
+        {
+            var (response, message) = await _persecutionUseCase.GetAllPersecutionsWithFilter(
+                idDemon,
+                idSoul
+            );
+            return new OkObjectResult(new { data = response, message });
+        }
     }
 }

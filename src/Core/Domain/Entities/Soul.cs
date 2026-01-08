@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations.Schema;
 using Inferno.src.Core.Domain.Entities.ManyToMany;
 
 namespace Inferno.src.Core.Domain.Entities;
@@ -6,8 +5,8 @@ namespace Inferno.src.Core.Domain.Entities;
 public class Soul
 {
     public Guid IdSoul { get; set; } = Guid.NewGuid();
-    public string? Name { get; set; }
-    public string? Description { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
     public HellEnum Level { get; set; } = HellEnum.Inferior;
 
     // Foreign Key
@@ -22,4 +21,11 @@ public class Soul
     public virtual ICollection<Realize> Realizes { get; set; } = new List<Realize>();
 
     public Soul() { }
+
+    public Soul(string name, string description, Guid? cavernId = null)
+    {
+        Name = name;
+        Description = description;
+        CavernId = cavernId;
+    }
 }

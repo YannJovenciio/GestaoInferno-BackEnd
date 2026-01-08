@@ -1,6 +1,13 @@
+using System.ComponentModel;
+
 public enum HellEnum
 {
-    Inferior,
-    Medio,
-    superior,
+    [Description("Inferior")]
+    Inferior = 1,
+
+    [Description("Medio")]
+    Medio = 2,
+
+    [Description("Superior")]
+    Superior = 3,
 }

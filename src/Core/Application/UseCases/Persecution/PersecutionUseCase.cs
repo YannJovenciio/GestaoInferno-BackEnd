@@ -1,49 +1,77 @@
-using Inferno.src.Adapters.Outbound.Persistence;
 using Inferno.src.Core.Application.DTOs;
-using Inferno.src.Core.Application.DTOs.Response;
-using Inferno.src.Core.Domain.Entities.ManyToMany;
+using Inferno.src.Core.Application.DTOs.Request.Persecution;
+using Inferno.src.Core.Domain.Interfaces.Persecution;
 using Inferno.src.Core.Domain.Interfaces.UseCases;
-using Microsoft.EntityFrameworkCore;
 
 namespace Inferno.src.Core.Application.UseCases.Demon
 {
     public class PersecutionUseCase : IPersecutionUseCase
     {
         private readonly ILogger<PersecutionUseCase> _logger;
-        private readonly HellDbContext _context;
+        private readonly IPersecutionRepository _persecutionRepository;
 
-        public PersecutionUseCase(HellDbContext context)
-        {
-            _context = context;
-        }
-
-        public async Task<(CreatePersecutionResponse, string message)> CreatePersecution(
-            Guid IdDemo,
-            Guid IdSoul
+        public PersecutionUseCase(
+            IPersecutionRepository persecutionRepository,
+            ILogger<PersecutionUseCase> logger
         )
         {
-            _logger.LogInformation(
-                $"Received request to create Persecution for demonGuid:{IdDemo} and Soul:{IdSoul}"
-            );
-            var demon = await _context.Demons.FirstOrDefaultAsync(d => d.IdDemon == IdDemo);
-            var soul = await _context.Souls.FirstOrDefaultAsync(s => s.IdSoul == IdSoul);
-
-            var shouldCreatePersecution = demon != null && soul != null ? true : false;
-            if (!shouldCreatePersecution)
-            {
-                return (null, $"No demon and soul found for the provided ids:{IdDemo},{IdSoul}");
-            }
-
-            var persecution = new Persecution(demon, soul);
-            _logger.LogInformation($"Created new Persecution entity {persecution}");
-
-            var response = new CreatePersecutionResponse(demon, soul);
-            return (response, "Persecution created sucessfuly");
+            _persecutionRepository = persecutionRepository;
+            _logger = logger;
         }
 
-        public Task<(List<DemonResponse> responses, string message)> GetManyPersecutions()
+        public async Task<(PersecutionResponse? response, string message)> CreatePersecution(
+            PersecutionRequest request
+        )
         {
-            throw new NotImplementedException();
+            _logger.LogInformation("Received request to create Persecution");
+            if (request == null)
+            {
+                return (null, "Invalid input provided");
+            }
+            var idDemon = request.IdDemon;
+            var idSoul = request.IdSoul;
+            _logger.LogInformation($"Ids provided DemonId:${idDemon},IdSoul:${idSoul}");
+            var response = await _persecutionRepository.CreatePersecution(idDemon, idSoul);
+            return (
+                new PersecutionResponse(response.Demon, response.Soul),
+                "Persecution created sucessfuly"
+            );
+        }
+
+        public async Task<(
+            List<PersecutionResponse>? responses,
+            string message
+        )> GetAllPersecutions()
+        {
+            _logger.LogInformation("Received request to get all persecutions");
+            var persecutions = await _persecutionRepository.GetAllPersecutions();
+            var responses = persecutions
+                .Select(p => new PersecutionResponse(p.Demon, p.Soul))
+                .ToList();
+            _logger.LogInformation($"sucessfuly found {persecutions.Count}persecutions");
+            return (responses, $"sucessfuly found {responses.Count} persecutions");
+        }
+
+        public async Task<(
+            List<PersecutionResponse>? persecutions,
+            string message
+        )> GetAllPersecutionsWithFilter(Guid? idDemon, Guid? idSoul)
+        {
+            _logger.LogInformation(
+                $"Receveid request to get all persecutions with {idDemon ?? null},{idSoul ?? null} filter"
+            );
+            var persecutions = await _persecutionRepository.GetAllPersecutionWithFilter(
+                idSoul: idSoul,
+                idDemon: idDemon
+            );
+
+            var response = persecutions
+                .Select(p => new PersecutionResponse(p.Demon, p.Soul))
+                .ToList();
+            _logger.LogInformation($"found {response.Count} persecutions for this filter");
+            if (response.Count == 0)
+                return (null, "No persecutions found for this filters");
+            return (response, $"Sucessfuly found {response.Count} persecutions for this filter");
         }
     }
 }

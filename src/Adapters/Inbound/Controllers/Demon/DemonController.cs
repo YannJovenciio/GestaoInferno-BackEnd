@@ -18,52 +18,71 @@ public class DemonController : ControllerBase
         _demonUseCase = demonUseCase;
     }
 
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<Core.Domain.Entities.Demon>>> GetDemons()
+    public async Task<IActionResult> CreateDemon([FromBody] DemonInput input)
     {
-        throw new NotImplementedException();
-    }
-
-    [HttpGet("{id}")]
-    public async Task<ActionResult<DemonResponse>> GetDemonById(Guid id)
-    {
-        _logger.LogInformation($"Received request to GetDemonById idDemon:{id}");
-        if (id == Guid.Empty)
-            return BadRequest(new { message = "ID inválid" });
-
-        var response = await _demonUseCase.GetByIdAsync(id);
-        return new OkObjectResult($"Demon:{response}");
-    }
-
-    [HttpPost("Create")]
-    public async Task<IActionResult> CreateDemon(DemonInput input)
-    {
-        _logger.LogInformation($"Received to CreateDemon DemonInput:{input}");
+        _logger.LogInformation($"received to CreateDemon DemonInput:{input}");
 
         if (input == null)
         {
-            return BadRequest(new { message = "Input Invalid" });
+            return BadRequest(new { message = "input Invalid" });
         }
 
         var (response, message) = await _demonUseCase.CreateAsync(input);
-
-        if (response == null)
-        {
-            return BadRequest(new { message });
-        }
+        _logger.LogInformation($"sucessfuly created demon");
 
         return new OkObjectResult(new { data = response, message });
     }
 
     [HttpPost("CreateMany")]
-    public async Task<IActionResult> CreateMany(DemonInput[] inputs)
+    public async Task<IActionResult> CreateMany(List<DemonInput> inputs)
     {
+        _logger.LogInformation($"receveid request to create {inputs.Count} demons");
         if (inputs == null)
         {
-            return BadRequest(new { message = "Input Invalid" });
+            return BadRequest(new { message = "input Invalid" });
         }
 
         var (responses, message) = await _demonUseCase.CreateManyAsync(inputs);
+        _logger.LogInformation($"sucessfuly created {responses.Count} demons");
+        return new OkObjectResult(new { data = responses, message });
+    }
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult<DemonResponse>> GetDemonById(Guid id)
+    {
+        _logger.LogInformation($"received request to Get with id:{id}");
+        if (id == Guid.Empty)
+            return BadRequest(new { message = "ID inválid" });
+
+        var (response, message) = await _demonUseCase.GetByIdAsync(id);
+        _logger.LogInformation($"sucessfuly found demon with id:{id}");
+        return new OkObjectResult(new { data = response, message });
+    }
+
+    [HttpGet("GetAll")]
+    public async Task<IActionResult> GetAll()
+    {
+        _logger.LogInformation($"receveid reqeust to get all demons");
+        var (response, message) = await _demonUseCase.GetAllAsync();
+        _logger.LogInformation($"successfully found {response.Count} demons");
+        return new OkObjectResult(new { data = response, message });
+    }
+
+    [HttpGet("GetAllF/")]
+    public async Task<IActionResult> GetAllWithFilters(
+        [FromQuery] string? name,
+        [FromQuery] Guid? categoryId,
+        [FromQuery] DateTime? createdAt
+    )
+    {
+        _logger.LogInformation(
+            $"receveid request do GetAllWithFilters with queries:{name ?? null},{categoryId ?? null},{createdAt ?? null}"
+        );
+        var (responses, message) = await _demonUseCase.GetAllWithFiltersAsync(
+            categoryId ?? null,
+            name ?? null,
+            createdAt ?? null
+        );
         return new OkObjectResult(new { data = responses, message });
     }
 }

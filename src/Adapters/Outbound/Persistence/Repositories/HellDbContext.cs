@@ -1,11 +1,3 @@
-using Inferno.src.Configuration.Category;
-using Inferno.src.Configuration.Cavern;
-using Inferno.src.Configuration.Demon;
-using Inferno.src.Configuration.Hell;
-using Inferno.src.Configuration.ManyToMany.Realize;
-using Inferno.src.Configuration.Persecution;
-using Inferno.src.Configuration.Sin;
-using Inferno.src.Configuration.Soul;
 using Inferno.src.Core.Domain.Entities;
 using Inferno.src.Core.Domain.Entities.ManyToMany;
 using Microsoft.EntityFrameworkCore;
@@ -29,7 +21,9 @@ public class HellDbContext : DbContext
     public HellDbContext(DbContextOptions<HellDbContext> options)
         : base(options)
     {
-        DbPath = GetDbPath();
+        var folder = Environment.SpecialFolder.LocalApplicationData;
+        var path = Environment.GetFolderPath(folder);
+        DbPath = System.IO.Path.Join(path, "Hell.db");
     }
 
     public HellDbContext()
@@ -39,18 +33,20 @@ public class HellDbContext : DbContext
 
     private static string GetDbPath()
     {
-        var folder = Environment.SpecialFolder.LocalApplicationData;
-        var path = Environment.GetFolderPath(folder);
-        return System.IO.Path.Join(path, "Hell.db");
+        var projectPath = AppContext.BaseDirectory;
+        if (projectPath.Contains("bin"))
+        {
+            projectPath =
+                System.IO.Path.GetDirectoryName(
+                    System.IO.Path.GetDirectoryName(System.IO.Path.GetDirectoryName(projectPath))
+                )
+                ?? projectPath;
+        }
+        return System.IO.Path.Join(projectPath, "Hell.db");
     }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        if (!optionsBuilder.IsConfigured)
-        {
-            optionsBuilder.UseSqlite($"Data Source ={DbPath}");
-        }
-    }
+    protected override void OnConfiguring(DbContextOptionsBuilder options) =>
+        options.UseSqlite($"Data Source ={DbPath};Foreign Keys=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

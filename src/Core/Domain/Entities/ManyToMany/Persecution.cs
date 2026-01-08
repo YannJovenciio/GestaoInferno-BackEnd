@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
-
 namespace Inferno.src.Core.Domain.Entities.ManyToMany
 {
     public class Persecution
@@ -15,8 +9,8 @@ namespace Inferno.src.Core.Domain.Entities.ManyToMany
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         // Navigation Properties
-        public Demon Demon { get; set; }
-        public Soul Soul { get; set; }
+        public required Demon Demon { get; set; }
+        public required Soul Soul { get; set; }
 
         public Persecution() { }
 

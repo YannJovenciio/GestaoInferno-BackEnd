@@ -1,16 +1,57 @@
+using System.Text.Json.Serialization;
+using Inferno.src.Adapters.Models.ErrorHandlerMiddleware;
+using Inferno.src.Adapters.Outbound.Persistence.Repositories.Persecution;
+using Inferno.src.Adapters.Outbound.Persistence.Repositories.Soul;
 using Inferno.src.Core.Application.UseCases.Demon;
-using Inferno.src.Core.Domain.Entities;
+using Inferno.src.Core.Application.UseCases.Soul;
 using Inferno.src.Core.Domain.Interfaces;
+using Inferno.src.Core.Domain.Interfaces.Persecution;
+using Inferno.src.Core.Domain.Interfaces.Repository.Souls;
 using Inferno.src.Core.Domain.Interfaces.UseCases;
 using Inferno.src.Core.Domain.Interfaces.UseCases.Demon;
+using Inferno.src.Core.Domain.Interfaces.UseCases.Soul;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Adicionar serviços
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
+
+builder.Services.ConfigureHttpJsonOptions(options =>
+{
+    options.SerializerOptions.PropertyNamingPolicy = null;
+});
+
+// Adicionar CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(
+        "AllowFrontend",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:3000").AllowAnyMethod().AllowAnyHeader();
+        }
+    );
+});
+
+builder
+    .Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
+
+//Repositories
 builder.Services.AddScoped<IDemonRepository, DemonRepository>();
+builder.Services.AddScoped<ISoulRepository, SoulRepository>();
+builder.Services.AddScoped<IPersecutionRepository, PersecutionRepository>();
+
+//UseCases
 builder.Services.AddScoped<IPersecutionUseCase, PersecutionUseCase>();
 builder.Services.AddScoped<IDemonUseCase, DemonUseCase>();
-builder.Services.AddControllers();
+builder.Services.AddScoped<ISoulUseCase, SoulUseCase>();
+
+//DbContext
 builder.Services.AddDbContext<Inferno.src.Adapters.Outbound.Persistence.HellDbContext>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -41,6 +82,13 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// Usar CORS
+app.UseCors("AllowFrontend");
+
+
+app.UseMiddleware<ErrorHandlerMiddleware>();
+
 app.MapControllers();
 
 // Teste do banco de dados
