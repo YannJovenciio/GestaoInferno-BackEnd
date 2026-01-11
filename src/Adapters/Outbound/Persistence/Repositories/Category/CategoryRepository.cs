@@ -38,9 +38,18 @@ public class CategoryRepository : ICategoryRepository
         return category;
     }
 
-    public async Task<List<Core.Domain.Entities.Category>> ListAllCategory()
+    public async Task<List<Core.Domain.Entities.Category>> ListAllCategory(
+        int? pageSize,
+        int? pageNumber
+    )
     {
-        var categories = _context.Categories.AsNoTracking().ToListAsync();
-        return await categories;
+        var categories = await _context
+            .Categories.AsNoTracking()
+            .OrderBy(c => c.CategoryName)
+            .Skip(((pageNumber ?? 1) - 1) * (pageSize ?? 10))
+            .Take(pageSize ?? 10)
+            .ToListAsync();
+
+        return categories;
     }
 }

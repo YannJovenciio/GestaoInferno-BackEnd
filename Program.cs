@@ -1,13 +1,17 @@
 using System.Text.Json.Serialization;
 using Inferno.src.Adapters.Models.ErrorHandlerMiddleware;
+using Inferno.src.Adapters.Outbound.Persistence.Repositories.Category;
 using Inferno.src.Adapters.Outbound.Persistence.Repositories.Persecution;
 using Inferno.src.Adapters.Outbound.Persistence.Repositories.Soul;
+using Inferno.src.Core.Application.UseCases.Category;
 using Inferno.src.Core.Application.UseCases.Demon;
 using Inferno.src.Core.Application.UseCases.Soul;
 using Inferno.src.Core.Domain.Interfaces;
 using Inferno.src.Core.Domain.Interfaces.Persecution;
+using Inferno.src.Core.Domain.Interfaces.Repository.Category;
 using Inferno.src.Core.Domain.Interfaces.Repository.Souls;
 using Inferno.src.Core.Domain.Interfaces.UseCases;
+using Inferno.src.Core.Domain.Interfaces.UseCases.Category;
 using Inferno.src.Core.Domain.Interfaces.UseCases.Demon;
 using Inferno.src.Core.Domain.Interfaces.UseCases.Soul;
 
@@ -45,11 +49,13 @@ builder
 builder.Services.AddScoped<IDemonRepository, DemonRepository>();
 builder.Services.AddScoped<ISoulRepository, SoulRepository>();
 builder.Services.AddScoped<IPersecutionRepository, PersecutionRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 
 //UseCases
 builder.Services.AddScoped<IPersecutionUseCase, PersecutionUseCase>();
 builder.Services.AddScoped<IDemonUseCase, DemonUseCase>();
 builder.Services.AddScoped<ISoulUseCase, SoulUseCase>();
+builder.Services.AddScoped<ICategoryUseCase, CategoryUseCase>();
 
 //DbContext
 builder.Services.AddDbContext<Inferno.src.Adapters.Outbound.Persistence.HellDbContext>();

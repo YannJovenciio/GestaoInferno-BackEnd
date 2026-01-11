@@ -58,10 +58,13 @@ namespace Inferno.src.Core.Application.UseCases.Category
             );
         }
 
-        public async Task<(List<CategoryResponse>? responses, string message)> ListAllCategory()
+        public async Task<(List<CategoryResponse>? responses, string message)> ListAllCategory(
+            int? pageSize,
+            int? pageNumber
+        )
         {
             _logger.LogInformation("Receveid request to list all categories");
-            var categories = await _context.ListAllCategory();
+            var categories = await _context.ListAllCategory(pageSize, pageNumber);
             if (categories == null || categories.Count == 0)
                 return (null, $"{categories.Count} Categories found");
             var response = categories

@@ -55,9 +55,12 @@ namespace Inferno.src.Core.Application.UseCases.Demon
             return (response, "Demon found sucessfuly");
         }
 
-        public async Task<(List<DemonResponse>? responses, string message)> GetAllAsync()
+        public async Task<(List<DemonResponse>? responses, string message)> GetAllAsync(
+            int? pageSize,
+            int? pageNumber
+        )
         {
-            var demons = await _context.GetAllAsync();
+            var demons = await _context.GetAllAsync(pageSize, pageNumber);
             var response = demons
                 .Select(d => new DemonResponse(d.IdDemon, d.DemonName, d.CategoryId.Value))
                 .ToList();

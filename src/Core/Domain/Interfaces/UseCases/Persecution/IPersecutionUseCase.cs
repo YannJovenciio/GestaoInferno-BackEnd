@@ -6,7 +6,7 @@ namespace Inferno.src.Core.Domain.Interfaces.UseCases
     public interface IPersecutionUseCase
     {
         Task<(PersecutionResponse? response, string message)> CreatePersecution(
-            PersecutionRequest request
+            PersecutionInput request
         );
         Task<(List<PersecutionResponse>? responses, string message)> GetAllPersecutions();
         Task<(

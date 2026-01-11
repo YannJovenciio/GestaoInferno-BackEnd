@@ -18,6 +18,25 @@ namespace Inferno.src.Adapters.Inbound.Controllers.Category
             _categoryUseCase = categoryUseCase;
         }
 
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> GetAll(
+            [FromQuery] int? pageSize,
+            [FromQuery] int? pageNumber
+        )
+        {
+            _logger.LogInformation("received request to get all Categories");
+            var (response, message) = await _categoryUseCase.ListAllCategory(pageSize, pageNumber);
+            _logger.LogInformation($"sucessfuly retrieved:{response.Count} categories");
+            return new OkObjectResult(
+                new
+                {
+                    data = response,
+                    message,
+                    response.Count,
+                }
+            );
+        }
+
         [HttpGet("GetById")]
         public async Task<IActionResult> GetById([FromQuery] Guid id)
         {
@@ -29,20 +48,11 @@ namespace Inferno.src.Adapters.Inbound.Controllers.Category
             return new OkObjectResult(new { data = response, message });
         }
 
-        [HttpGet("Get")]
-        public async Task<IActionResult> GetAll()
-        {
-            _logger.LogInformation("received request to get all Categories");
-            var (response, message) = await _categoryUseCase.ListAllCategory();
-            _logger.LogInformation($"sucessfuly retrieved:{response.Count} categories");
-            return new OkObjectResult(new { data = response, message });
-        }
-
         [HttpPost("Create")]
         public async Task<IActionResult> Create([FromBody] CategoryInput category)
         {
             _logger.LogInformation($"received request to Create Category:{category}");
-            if (category == null)
+            if (category == null || string.IsNullOrWhiteSpace(category.CategoryName))
                 return new BadRequestObjectResult("Invalid input provided");
             var (response, message) = await _categoryUseCase.CreateCategory(category);
             _logger.LogInformation($"sucessfuly created category");
@@ -55,6 +65,10 @@ namespace Inferno.src.Adapters.Inbound.Controllers.Category
             _logger.LogInformation($"received request to create {inputs.Count} categories");
             if (inputs == null || inputs.Count == 0)
                 return new BadRequestObjectResult("Invalid input provided");
+
+            if (inputs.Any(x => string.IsNullOrWhiteSpace(x.CategoryName)))
+                return new BadRequestObjectResult("All categories must have a valid CategoryName");
+
             var (response, message) = await _categoryUseCase.CreateManyCategory(inputs);
             _logger.LogInformation($"sucessfuly created {response.Count} categories");
             return new OkObjectResult(new { data = response, message });

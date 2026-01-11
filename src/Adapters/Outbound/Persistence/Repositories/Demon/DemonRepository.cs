@@ -33,18 +33,15 @@ public class DemonRepository : IDemonRepository
         return inputs;
     }
 
-    public async Task<List<Demon>> GetAllAsync()
-    {
-        var demons = await _context.Demons.AsNoTracking().ToListAsync();
-        return demons;
-    }
-
-    public async Task<List<Demon>> GetAllWithFiltersAsync(Guid categoryId)
+    public async Task<List<Demon>> GetAllAsync(int? pageSize, int? pageNumber)
     {
         var demons = await _context
             .Demons.AsNoTracking()
-            .Where(d => d.CategoryId == categoryId)
+            .OrderBy(d => d.DemonName)
+            .Skip(((pageNumber ?? 1) - 1) * (pageSize ?? 10))
+            .Take(pageSize ?? 10)
             .ToListAsync();
+
         return demons;
     }
 

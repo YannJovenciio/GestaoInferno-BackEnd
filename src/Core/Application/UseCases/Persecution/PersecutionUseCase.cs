@@ -20,7 +20,7 @@ namespace Inferno.src.Core.Application.UseCases.Demon
         }
 
         public async Task<(PersecutionResponse? response, string message)> CreatePersecution(
-            PersecutionRequest request
+            PersecutionInput request
         )
         {
             _logger.LogInformation("Received request to create Persecution");

@@ -1,3 +1,4 @@
+using Inferno.src.Adapters.Inbound.Controllers.Model;
 using Inferno.src.Core.Application.DTOs;
 using Inferno.src.Core.Application.DTOs.Request.Demon;
 using Inferno.src.Core.Domain.Interfaces.UseCases.Demon;
@@ -18,57 +19,104 @@ public class DemonController : ControllerBase
         _demonUseCase = demonUseCase;
     }
 
+    [HttpPost]
     public async Task<IActionResult> CreateDemon([FromBody] DemonInput input)
     {
         _logger.LogInformation($"received to CreateDemon DemonInput:{input}");
 
         if (input == null)
         {
-            return BadRequest(new { message = "input Invalid" });
+            return BadRequest(
+                new ResponseModel<DemonResponse> { Status = false, Message = "input Invalid" }
+            );
         }
 
         var (response, message) = await _demonUseCase.CreateAsync(input);
         _logger.LogInformation($"sucessfuly created demon");
 
-        return new OkObjectResult(new { data = response, message });
+        return CreatedAtAction(
+            nameof(GetDemonById),
+            new { id = response},
+            new ResponseModel<DemonResponse>
+            {
+                Status = true,
+                Message = message,
+                Data = response,
+            }
+        );
     }
 
     [HttpPost("CreateMany")]
-    public async Task<IActionResult> CreateMany(List<DemonInput> inputs)
+    public async Task<IActionResult> CreateMany([FromBody] List<DemonInput> inputs)
     {
         _logger.LogInformation($"receveid request to create {inputs.Count} demons");
-        if (inputs == null)
+        if (inputs == null || inputs.Count == 0)
         {
-            return BadRequest(new { message = "input Invalid" });
+            return BadRequest(
+                new ResponseModel<List<DemonResponse>> { Status = false, Message = "input Invalid" }
+            );
         }
 
         var (responses, message) = await _demonUseCase.CreateManyAsync(inputs);
         _logger.LogInformation($"sucessfuly created {responses.Count} demons");
-        return new OkObjectResult(new { data = responses, message });
+        return Ok(
+            new ResponseModel<List<DemonResponse>>
+            {
+                Status = true,
+                Message = message,
+                Data = responses,
+            }
+        );
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<DemonResponse>> GetDemonById(Guid id)
+    public async Task<IActionResult> GetDemonById([FromRoute] Guid id)
     {
         _logger.LogInformation($"received request to Get with id:{id}");
         if (id == Guid.Empty)
-            return BadRequest(new { message = "ID inválid" });
+        {
+            return BadRequest(
+                new ResponseModel<DemonResponse> { Status = false, Message = "ID inválid" }
+            );
+        }
 
         var (response, message) = await _demonUseCase.GetByIdAsync(id);
+        if (response == null)
+        {
+            _logger.LogWarning($"demon with id:{id} not found");
+            return NotFound(
+                new ResponseModel<DemonResponse> { Status = false, Message = "Demon not found" }
+            );
+        }
+
         _logger.LogInformation($"sucessfuly found demon with id:{id}");
-        return new OkObjectResult(new { data = response, message });
+        return Ok(
+            new ResponseModel<DemonResponse>
+            {
+                Status = true,
+                Message = message,
+                Data = response,
+            }
+        );
     }
 
-    [HttpGet("GetAll")]
-    public async Task<IActionResult> GetAll()
+    [HttpGet]
+    public async Task<IActionResult> GetAll([FromQuery] int? pageSize, [FromQuery] int? pageNumber)
     {
-        _logger.LogInformation($"receveid reqeust to get all demons");
-        var (response, message) = await _demonUseCase.GetAllAsync();
+        _logger.LogInformation($"receveid request to get all demons");
+        var (response, message) = await _demonUseCase.GetAllAsync(pageSize, pageNumber);
         _logger.LogInformation($"successfully found {response.Count} demons");
-        return new OkObjectResult(new { data = response, message });
+        return Ok(
+            new ResponseModel<List<DemonResponse>>
+            {
+                Status = true,
+                Message = message,
+                Data = response,
+            }
+        );
     }
 
-    [HttpGet("GetAllF/")]
+    [HttpGet("filter")]
     public async Task<IActionResult> GetAllWithFilters(
         [FromQuery] string? name,
         [FromQuery] Guid? categoryId,
@@ -83,6 +131,13 @@ public class DemonController : ControllerBase
             name ?? null,
             createdAt ?? null
         );
-        return new OkObjectResult(new { data = responses, message });
+        return Ok(
+            new ResponseModel<List<DemonResponse>>
+            {
+                Status = true,
+                Message = message,
+                Data = responses,
+            }
+        );
     }
 }

@@ -20,7 +20,7 @@ namespace Inferno.src.Adapters.Inbound.Persecution
         }
 
         [HttpPost("CreatePersecution")]
-        public async Task<IActionResult> CreatePersecution([FromBody] PersecutionRequest request)
+        public async Task<IActionResult> CreatePersecution([FromBody] PersecutionInput request)
         {
             _logger.LogInformation(
                 $"received request to create persecution with Demon id:{request.IdDemon} and Soul id:{request.IdSoul}"

@@ -10,7 +10,10 @@ namespace Inferno.src.Core.Domain.Interfaces.UseCases.Demon
             List<DemonInput> inputs
         );
         Task<(DemonResponse? response, string message)> GetByIdAsync(Guid id);
-        Task<(List<DemonResponse>? responses, string message)> GetAllAsync();
+        Task<(List<DemonResponse>? responses, string message)> GetAllAsync(
+            int? pageSize,
+            int? pageNumber
+        );
         Task<(List<DemonResponse>? responses, string message)> GetAllWithFiltersAsync(
             Guid? categoryId,
             string? name,
