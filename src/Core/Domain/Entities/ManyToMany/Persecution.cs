@@ -2,7 +2,7 @@ namespace Inferno.src.Core.Domain.Entities.ManyToMany
 {
     public class Persecution
     {
-        public Guid IdDemon { get; set; } = Guid.NewGuid();
+        public Guid IdDemon { get; set; }
 
         public Guid IdSoul { get; set; }
 

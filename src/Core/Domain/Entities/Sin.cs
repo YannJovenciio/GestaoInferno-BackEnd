@@ -5,7 +5,7 @@ namespace Inferno.src.Core.Domain.Entities
 {
     public class Sin
     {
-        public Guid IdSin { get; set; } = Guid.NewGuid();
+        public Guid IdSin { get; set; }
         public string SinName { get; set; }
         public required Severity SinSeverity { get; set; }
 

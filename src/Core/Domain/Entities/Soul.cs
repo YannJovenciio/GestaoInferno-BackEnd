@@ -4,7 +4,7 @@ namespace Inferno.src.Core.Domain.Entities;
 
 public class Soul
 {
-    public Guid IdSoul { get; set; } = Guid.NewGuid();
+    public Guid IdSoul { get; set; }
     public string Name { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public HellEnum Level { get; set; } = HellEnum.Inferior;

@@ -26,23 +26,16 @@ public class DemonController : ControllerBase
 
         if (input == null)
         {
-            return BadRequest(
-                new ResponseModel<DemonResponse> { Status = false, Message = "input Invalid" }
-            );
+            return BadRequest(new APIResponse<DemonResponse>("input Invalid"));
         }
 
         var (response, message) = await _demonUseCase.CreateAsync(input);
         _logger.LogInformation($"sucessfuly created demon");
 
         return CreatedAtAction(
-            nameof(GetDemonById),
-            new { id = response},
-            new ResponseModel<DemonResponse>
-            {
-                Status = true,
-                Message = message,
-                Data = response,
-            }
+            nameof(CreateDemon),
+            new { id = response.IdDemon },
+            new APIResponse<DemonResponse>(response, message)
         );
     }
 
@@ -53,19 +46,16 @@ public class DemonController : ControllerBase
         if (inputs == null || inputs.Count == 0)
         {
             return BadRequest(
-                new ResponseModel<List<DemonResponse>> { Status = false, Message = "input Invalid" }
+                new APIResponse<List<DemonResponse>> { Status = false, Message = "input Invalid" }
             );
         }
 
         var (responses, message) = await _demonUseCase.CreateManyAsync(inputs);
         _logger.LogInformation($"sucessfuly created {responses.Count} demons");
-        return Ok(
-            new ResponseModel<List<DemonResponse>>
-            {
-                Status = true,
-                Message = message,
-                Data = responses,
-            }
+        return CreatedAtAction(
+            nameof(CreateMany),
+            new { id = responses },
+            new APIResponse<List<DemonResponse>>(responses, message)
         );
     }
 
@@ -76,7 +66,7 @@ public class DemonController : ControllerBase
         if (id == Guid.Empty)
         {
             return BadRequest(
-                new ResponseModel<DemonResponse> { Status = false, Message = "ID inválid" }
+                new APIResponse<DemonResponse> { Status = false, Message = "ID inválid" }
             );
         }
 
@@ -84,20 +74,11 @@ public class DemonController : ControllerBase
         if (response == null)
         {
             _logger.LogWarning($"demon with id:{id} not found");
-            return NotFound(
-                new ResponseModel<DemonResponse> { Status = false, Message = "Demon not found" }
-            );
+            return NotFound(new APIResponse<DemonResponse>(response, message));
         }
 
         _logger.LogInformation($"sucessfuly found demon with id:{id}");
-        return Ok(
-            new ResponseModel<DemonResponse>
-            {
-                Status = true,
-                Message = message,
-                Data = response,
-            }
-        );
+        return Ok(new APIResponse<DemonResponse>(response, message));
     }
 
     [HttpGet]
@@ -106,14 +87,7 @@ public class DemonController : ControllerBase
         _logger.LogInformation($"receveid request to get all demons");
         var (response, message) = await _demonUseCase.GetAllAsync(pageSize, pageNumber);
         _logger.LogInformation($"successfully found {response.Count} demons");
-        return Ok(
-            new ResponseModel<List<DemonResponse>>
-            {
-                Status = true,
-                Message = message,
-                Data = response,
-            }
-        );
+        return Ok(new APIResponse<List<DemonResponse>>(response, message));
     }
 
     [HttpGet("filter")]
@@ -131,13 +105,6 @@ public class DemonController : ControllerBase
             name ?? null,
             createdAt ?? null
         );
-        return Ok(
-            new ResponseModel<List<DemonResponse>>
-            {
-                Status = true,
-                Message = message,
-                Data = responses,
-            }
-        );
+        return Ok(new APIResponse<List<DemonResponse>>(responses, message));
     }
 }

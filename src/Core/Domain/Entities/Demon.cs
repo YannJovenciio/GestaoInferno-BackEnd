@@ -4,7 +4,7 @@ namespace Inferno.src.Core.Domain.Entities;
 
 public class Demon
 {
-    public Guid IdDemon { get; set; } = Guid.NewGuid();
+    public Guid IdDemon { get; set; }
     public Guid? CategoryId { get; set; } = null;
     public string DemonName { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

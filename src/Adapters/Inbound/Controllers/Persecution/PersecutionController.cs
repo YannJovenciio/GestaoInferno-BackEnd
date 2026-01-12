@@ -1,3 +1,6 @@
+using Inferno.src.Adapters.Inbound.Controllers.Category;
+using Inferno.src.Adapters.Inbound.Controllers.Model;
+using Inferno.src.Core.Application.DTOs;
 using Inferno.src.Core.Application.DTOs.Request.Persecution;
 using Inferno.src.Core.Domain.Interfaces.UseCases;
 using Microsoft.AspNetCore.Mvc;
@@ -25,15 +28,19 @@ namespace Inferno.src.Adapters.Inbound.Persecution
             _logger.LogInformation(
                 $"received request to create persecution with Demon id:{request.IdDemon} and Soul id:{request.IdSoul}"
             );
+
             if (!ModelState.IsValid)
-            {
-                return BadRequest("invalid arguments");
-            }
-            var (message, response) = await _persecutionUseCase.CreatePersecution(request);
+                return BadRequest(new APIResponse<PersecutionResponse>("invalid input provided"));
+
+            var (response, message) = await _persecutionUseCase.CreatePersecution(request);
             _logger.LogInformation(
                 $"sucessfuly created persecution with Demon id:{request.IdDemon} and Soul id:{request.IdSoul}"
             );
-            return new OkObjectResult(new { data = response, message });
+            return CreatedAtAction(
+                nameof(PersecutionResponse),
+                new { id = response },
+                new APIResponse<PersecutionResponse>(response, message)
+            );
         }
 
         [HttpGet("GetAll")]
@@ -42,7 +49,7 @@ namespace Inferno.src.Adapters.Inbound.Persecution
             _logger.LogInformation("receveid request to get all persecutions");
             var (response, message) = await _persecutionUseCase.GetAllPersecutions();
             _logger.LogInformation($"sucessfuly found {response.Count} persecutions");
-            return new OkObjectResult(new { data = response, message });
+            return Ok(new { data = response, message });
         }
 
         [HttpGet("GetAllF")]
@@ -55,7 +62,7 @@ namespace Inferno.src.Adapters.Inbound.Persecution
                 idDemon,
                 idSoul
             );
-            return new OkObjectResult(new { data = response, message });
+            return Ok(new APIResponse<List<PersecutionResponse>>(response, message));
         }
     }
 }
