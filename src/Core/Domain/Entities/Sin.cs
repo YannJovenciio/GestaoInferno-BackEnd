@@ -7,10 +7,10 @@ namespace Inferno.src.Core.Domain.Entities
     {
         public Guid IdSin { get; set; }
         public string SinName { get; set; }
-        public required Severity SinSeverity { get; set; }
+        public Severity SinSeverity { get; set; }
 
         // Foreign Key
-        public Guid IdSoul { get; set; }
+        public Guid? IdSoul { get; set; }
 
         // Navigation properties
         public Soul? Soul { get; set; }
@@ -19,5 +19,11 @@ namespace Inferno.src.Core.Domain.Entities
         public virtual ICollection<Realize> Realizes { get; set; } = new List<Realize>();
 
         public Sin() { }
+
+        public Sin(string sinName, Severity sinSveretiry)
+        {
+            SinName = sinName;
+            SinSeverity = sinSveretiry;
+        }
     }
 }

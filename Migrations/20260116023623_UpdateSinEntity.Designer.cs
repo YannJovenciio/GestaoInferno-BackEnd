@@ -3,6 +3,7 @@ using System;
 using Inferno.src.Adapters.Outbound.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Inferno.Migrations
 {
     [DbContext(typeof(HellDbContext))]
-    partial class HellDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260116023623_UpdateSinEntity")]
+    partial class UpdateSinEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.0");
@@ -144,7 +147,7 @@ namespace Inferno.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("IdSoul")
+                    b.Property<Guid>("IdSoul")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("SinName")
@@ -243,8 +246,7 @@ namespace Inferno.Migrations
                 {
                     b.HasOne("Inferno.src.Core.Domain.Entities.Soul", "Soul")
                         .WithMany("Sins")
-                        .HasForeignKey("IdSoul")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .HasForeignKey("IdSoul");
 
                     b.Navigation("Soul");
                 });

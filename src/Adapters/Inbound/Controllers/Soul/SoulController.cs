@@ -30,7 +30,7 @@ public class SoulController : ControllerBase
 
         var (response, message) = await _soulUseCase.CreateSoul(request);
         return CreatedAtAction(
-            nameof(GetById),
+            nameof(Create),
             new { id = response.IdSoul },
             new APIResponse<SoulResponse>(response, message)
         );

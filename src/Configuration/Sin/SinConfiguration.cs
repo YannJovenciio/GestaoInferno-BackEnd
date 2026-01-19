@@ -9,9 +9,10 @@ namespace Inferno.src.Configuration.Sin
         public void Configure(EntityTypeBuilder<entity.Sin> builder)
         {
             builder.HasKey(s => s.IdSin);
-            builder.Property(s => s.SinName);
-            builder.Property(s => s.SinSeverity);
-            builder.HasOne(s => s.Soul).WithMany(so => so.Sins).HasForeignKey(s => s.IdSoul);
+            builder.Property(s => s.SinName).IsRequired();
+            builder.Property(s => s.SinSeverity).IsRequired();
+            builder.Property(s => s.IdSoul).IsRequired(false);
+            builder.HasOne(s => s.Soul).WithMany(so => so.Sins).HasForeignKey(s => s.IdSoul).OnDelete(DeleteBehavior.SetNull);
         }
     }
 }
