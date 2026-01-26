@@ -45,6 +45,16 @@ public class DemonRepository : IDemonRepository
         return demons;
     }
 
+    public async Task<List<Demon>> GetAllAsync()
+    {
+        var demons = await _context
+            .Demons.AsNoTracking()
+            .OrderBy(d => d.DemonName)
+            .ToListAsync();
+
+        return demons;
+    }
+
     public async Task<List<Demon>> GetAllWithFiltersAsync(
         Guid? categoryId,
         string? name,

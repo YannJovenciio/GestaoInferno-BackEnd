@@ -18,7 +18,7 @@ namespace Inferno.src.Core.Application.UseCases.Soul
         }
 
         public async Task<(List<SoulResponse>? response, string message)> CreateManySoulsAsync(
-            List<SoulRequest> souls
+            List<SoulInput> souls
         )
         {
             if (souls == null || souls.Count == 0)
@@ -87,7 +87,7 @@ namespace Inferno.src.Core.Application.UseCases.Soul
             );
         }
 
-        public async Task<(SoulResponse? response, string message)> CreateSoul(SoulRequest request)
+        public async Task<(SoulResponse? response, string message)> CreateSoul(SoulInput request)
         {
             _logger.LogInformation("Received request to create soul");
             if (request == null)

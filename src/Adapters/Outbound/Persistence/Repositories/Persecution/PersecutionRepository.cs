@@ -44,7 +44,7 @@ namespace Inferno.src.Adapters.Outbound.Persistence.Repositories.Persecution
             if (idDemon.HasValue)
                 query = query.Where(p => p.IdDemon == idDemon);
             if (idSoul.HasValue)
-                query = query.Where(p => p.IdSoul == idDemon);
+                query = query.Where(p => p.IdSoul == idSoul);
             return await query.ToListAsync();
         }
     }

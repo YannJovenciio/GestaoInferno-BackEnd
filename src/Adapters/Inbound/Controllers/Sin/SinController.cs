@@ -101,5 +101,12 @@ namespace Inferno.src.Adapters.Inbound.Controllers.Sin
             var (responses, message) = await _getBySeverity.GetSinBySeverity();
             return Ok(new APIResponse<List<GetSinBySeverityResponse>>(responses, message));
         }
+
+        [HttpGet("OrderedBySeverity")]
+        public async Task<IActionResult> GetOrderedBySeverity()
+        {
+            var (response, message) = await _sinUseCase.GetAllOrdered();
+            return Ok(new APIResponse<List<SinOrderedBySeverity>>(response, message));
+        }
     }
 }

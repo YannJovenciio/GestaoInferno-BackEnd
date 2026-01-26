@@ -1,3 +1,4 @@
+using Inferno.src.Adapters.Inbound.Controllers.Demon;
 using Inferno.src.Core.Application.DTOs;
 using Inferno.src.Core.Application.DTOs.Request.Demon;
 using Inferno.src.Core.Domain.Interfaces;
@@ -94,6 +95,25 @@ namespace Inferno.src.Core.Application.UseCases.Demon
             }
 
             return (responses, $"Successfully found {responses.Count} demon(s)");
+        }
+
+        public async Task<(
+            List<DemonOrderedByCategory> responses,
+            string message
+        )> GetDemonByCategory()
+        {
+            var demons = await _context.GetAllAsync();
+            var demonsGroupedByCategory = demons
+                .GroupBy(d => d.CategoryId)
+                .Select(g => new DemonOrderedByCategory(
+                    g.Key,
+                    g.Count(),
+                    (g.Count() / (double)demons.Count) * 100,
+                    g.Select(S => S.Category).ToList()
+                ))
+                .OrderBy(x => x.DemonCount)
+                .ToList();
+            return (demonsGroupedByCategory, "sucessfuly retrivied demons grouped by category");
         }
     }
 }

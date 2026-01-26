@@ -8,9 +8,9 @@ namespace Inferno.src.Core.Domain.Interfaces.UseCases.Soul
         Task<(SoulResponse? response, string message)> GetSoulByIdAsync(Guid id);
         Task<(List<SoulResponse>? response, string message)> GetAllSoulsAsync();
         Task<(List<SoulResponse>? response, string message)> CreateManySoulsAsync(
-            List<SoulRequest> requests
+            List<SoulInput> requests
         );
-        Task<(SoulResponse? response, string message)> CreateSoul(SoulRequest request);
+        Task<(SoulResponse? response, string message)> CreateSoul(SoulInput request);
         Task<(List<SoulResponse>? responses, string message)> GetAllSoulsWithFilters(
             Guid? cavernId,
             HellEnum? level,

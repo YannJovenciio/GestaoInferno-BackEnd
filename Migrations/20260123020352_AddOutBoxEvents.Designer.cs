@@ -3,6 +3,7 @@ using System;
 using Inferno.src.Adapters.Outbound.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Inferno.Migrations
 {
     [DbContext(typeof(HellDbContext))]
-    partial class HellDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260123020352_AddOutBoxEvents")]
+    partial class AddOutBoxEvents
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.0");
@@ -157,7 +160,7 @@ namespace Inferno.Migrations
                     b.Property<string>("Error")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("ProcessedAt")
+                    b.Property<DateTime>("ProcessedAt")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Type")

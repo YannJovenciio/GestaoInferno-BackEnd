@@ -107,4 +107,11 @@ public class DemonController : ControllerBase
         );
         return Ok(new APIResponse<List<DemonResponse>>(responses, message));
     }
+
+    [HttpGet("OrderedByCategory")]
+    public async Task<IActionResult> GetOrderedByCategory()
+    {
+        var (response, message) = await _demonUseCase.GetDemonByCategory();
+        return Ok(new APIResponse<List<DemonOrderedByCategory>>(response, message));
+    }
 }

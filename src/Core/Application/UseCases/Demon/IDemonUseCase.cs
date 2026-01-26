@@ -1,3 +1,4 @@
+using Inferno.src.Adapters.Inbound.Controllers.Demon;
 using Inferno.src.Core.Application.DTOs;
 using Inferno.src.Core.Application.DTOs.Request.Demon;
 
@@ -19,5 +20,6 @@ namespace Inferno.src.Core.Domain.Interfaces.UseCases.Demon
             string? name,
             DateTime? createdAt
         );
+        Task<(List<DemonOrderedByCategory> responses, string message)> GetDemonByCategory();
     }
 }

@@ -1,4 +1,3 @@
-using Inferno.src.Adapters.Inbound.Controllers.Category;
 using Inferno.src.Adapters.Inbound.Controllers.Model;
 using Inferno.src.Core.Application.DTOs;
 using Inferno.src.Core.Application.DTOs.Request.Persecution;

@@ -15,4 +15,5 @@ public interface ISinUseCase
     Task<(SinResponse? response, string message)> Delete(Guid idSin);
     Task<(SinResponse response, string message)> Update(Guid idSin, SinResponse sin);
     Task<(List<SinResponse> responses, string message)> CreateMany(List<SinInput> input);
+    Task<(List<SinOrderedBySeverity>? response, string message)> GetAllOrdered();
 }

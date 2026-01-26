@@ -1,5 +1,7 @@
 using Inferno.src.Adapters.Inbound.Controllers.Sin;
+using Inferno.src.Core.Application.UseCases.Services;
 using Inferno.src.Core.Domain.Enums;
+using Inferno.src.Core.Domain.Event;
 using Inferno.src.Core.Domain.Interfaces.Repository.Sin;
 using Entity = Inferno.src.Core.Domain.Entities;
 
@@ -10,10 +12,17 @@ namespace Inferno.src.Core.Application.UseCases.Sin
         private readonly ISinRepository _context;
         private readonly ILogger<SinUseCase> _logger;
 
-        public SinUseCase(ISinRepository context, ILogger<SinUseCase> logger)
+        private readonly IEventPublisher _eventPublisher;
+
+        public SinUseCase(
+            ISinRepository context,
+            ILogger<SinUseCase> logger,
+            IEventPublisher eventPublisher
+        )
         {
             _context = context;
             _logger = logger;
+            _eventPublisher = eventPublisher;
         }
 
         public async Task<(SinResponse response, string message)> CreateSin(SinInput input)
@@ -26,6 +35,9 @@ namespace Inferno.src.Core.Application.UseCases.Sin
 
             var sin = new Entity.Sin(input.SinName, input.SinSeverity);
             await _context.Create(sin);
+            await _eventPublisher.PublishAsync(
+                new SinCreatedEvent(sin.IdSin, sin.SinName, sin.SinSeverity, DateTime.UtcNow)
+            );
 
             var message =
                 $"Sucessful created sin with properties {sin.IdSin},{sin.SinName},{sin.SinSeverity}";
@@ -142,9 +154,30 @@ namespace Inferno.src.Core.Application.UseCases.Sin
             );
             throw new NotImplementedException();
         }
+
         public Task<(List<SinResponse> responses, string message)> CreateMany(List<SinInput> input)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<(List<SinOrderedBySeverity>? response, string message)> GetAllOrdered()
+        {
+            var sins = await _context.GetAll();
+            if (sins.Count == 0)
+            {
+                return (null, "No sins found");
+            }
+            var sinsCount = sins.Count();
+            var response = sins.GroupBy(s => s.SinSeverity)
+                .Select(x => new SinOrderedBySeverity(
+                    x.Key,
+                    x.Count(),
+                    x.Select(x => x.SinName).ToList(),
+                    (x.Count()) / ((double)sinsCount) * 100
+                ))
+                .ToList();
+
+            return (response, "Sucessfull retrivied sins ordered by severity");
         }
     }
 }

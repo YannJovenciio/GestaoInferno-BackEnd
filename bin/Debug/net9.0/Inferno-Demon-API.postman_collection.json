@@ -1,0 +1,657 @@
+{
+	"info": {
+		"_postman_id": "demon-api-collection",
+		"name": "Inferno - Demon API",
+		"description": "Collection para testar os endpoints da API de Demons do projeto Inferno",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create Demon",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"categoryId\": \"14C4F483-85D7-4836-80B4-B5A0C911FAF2\",\n  \"demonName\": \"Lucifer\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/Demon",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"Demon"
+					]
+				},
+				"description": "Cria um novo demon com nome e categoria"
+			},
+			"response": []
+		},
+		{
+			"name": "Create Many Demons",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n  {\n    \"categoryId\": \"14C4F483-85D7-4836-80B4-B5A0C911FAF2\",\n    \"demonName\": \"Laster\"\n  },\n  {\n    \"categoryId\": \"14C4F483-85D7-4836-80B4-B5A0C911FAF2\",\n    \"demonName\": \"Malvox\"\n  },\n  {\n    \"categoryId\": \"14C4F483-85D7-4836-80B4-B5A0C911FAF2\",\n    \"demonName\": \"Mephitos\"\n  }\n]"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/Demon/CreateMany",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"Demon",
+						"CreateMany"
+					]
+				},
+				"description": "Cria múltiplos demons de uma vez"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Demon By ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/Demon/{{demonId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"Demon",
+						"{{demonId}}"
+					]
+				},
+				"description": "Busca um demon específico pelo ID"
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Demons",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/Demon",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"Demon"
+					]
+				},
+				"description": "Lista todos os demons sem paginação"
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Demons (Paginated)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/Demon?pageSize=10&pageNumber=1",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"Demon"
+					],
+					"query": [
+						{
+							"key": "pageSize",
+							"value": "10",
+							"description": "Quantidade de itens por página"
+						},
+						{
+							"key": "pageNumber",
+							"value": "1",
+							"description": "Número da página (começando em 1)"
+						}
+					]
+				},
+				"description": "Lista todos os demons com paginação"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Demons With Filters - By Name",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/Demon/filter?name=Lucifer",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"Demon",
+						"filter"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Lucifer",
+							"description": "Filtrar por nome do demon"
+						}
+					]
+				},
+				"description": "Busca demons filtrados por nome"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Demons With Filters - By Category",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/Demon/filter?categoryId=14C4F483-85D7-4836-80B4-B5A0C911FAF2",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"Demon",
+						"filter"
+					],
+					"query": [
+						{
+							"key": "categoryId",
+							"value": "14C4F483-85D7-4836-80B4-B5A0C911FAF2",
+							"description": "Filtrar por ID da categoria"
+						}
+					]
+				},
+				"description": "Busca demons filtrados por categoria"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Demons With Filters - By Date",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/Demon/filter?createdAt=2026-01-22",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"Demon",
+						"filter"
+					],
+					"query": [
+						{
+							"key": "createdAt",
+							"value": "2026-01-22",
+							"description": "Filtrar por data de criação"
+						}
+					]
+				},
+				"description": "Busca demons filtrados por data de criação"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Demons With Filters - Combined",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/Demon/filter?name=Lucifer&categoryId=14C4F483-85D7-4836-80B4-B5A0C911FAF2&createdAt=2026-01-22",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"Demon",
+						"filter"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Lucifer",
+							"description": "Filtrar por nome do demon"
+						},
+						{
+							"key": "categoryId",
+							"value": "14C4F483-85D7-4836-80B4-B5A0C911FAF2",
+							"description": "Filtrar por ID da categoria"
+						},
+						{
+							"key": "createdAt",
+							"value": "2026-01-22",
+							"description": "Filtrar por data de criação"
+						}
+					]
+				},
+				"description": "Busca demons com múltiplos filtros combinados"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Demons Ordered By Category",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/Demon/OrderedByCategory",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"Demon",
+						"OrderedByCategory"
+					]
+				},
+				"description": "Lista demons ordenados por categoria"
+			},
+			"response": []
+		}
+		,
+		{
+			"name": "Get All Categories",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/Category/GetAll?pageSize=10&pageNumber=1",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"Category",
+						"GetAll"
+					],
+					"query": [
+						{ "key": "pageSize", "value": "10", "description": "Itens por página" },
+						{ "key": "pageNumber", "value": "1", "description": "Número da página" }
+					]
+				},
+				"description": "Lista todas as categorias com paginação"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Category By ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/Category/GetById?id={{categoryId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"Category",
+						"GetById"
+					],
+					"query": [
+						{ "key": "id", "value": "{{categoryId}}", "description": "ID da categoria" }
+					]
+				},
+				"description": "Busca uma categoria pelo ID (query param)"
+			},
+			"response": []
+		},
+		{
+			"name": "Create Category",
+			"request": {
+				"method": "POST",
+				"header": [
+					{ "key": "Content-Type", "value": "application/json" }
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"categoryName\": \"Abyss\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/Category/Create",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"Category",
+						"Create"
+					]
+				},
+				"description": "Cria uma nova categoria"
+			},
+			"response": []
+		},
+		{
+			"name": "Create Many Categories",
+			"request": {
+				"method": "POST",
+				"header": [
+					{ "key": "Content-Type", "value": "application/json" }
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n  { \"categoryName\": \"Fire\" },\n  { \"categoryName\": \"Darkness\" },\n  { \"categoryName\": \"Torment\" }\n]"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/Category/CreateMany",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"Category",
+						"CreateMany"
+					]
+				},
+				"description": "Cria várias categorias de uma vez"
+			},
+			"response": []
+		},
+		{
+			"name": "Persecution - Create",
+			"request": {
+				"method": "POST",
+				"header": [
+					{ "key": "Content-Type", "value": "application/json" }
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"idDemon\": \"{{demonId}}\",\n  \"idSoul\": \"{{soulId}}\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/Persecution/CreatePersecution",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"Persecution",
+						"CreatePersecution"
+					]
+				},
+				"description": "Cria uma perseguição entre um Demon e uma Soul"
+			},
+			"response": []
+		},
+		{
+			"name": "Persecution - Get All",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/Persecution/GetAll",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"Persecution",
+						"GetAll"
+					]
+				},
+				"description": "Lista todas as perseguições"
+			},
+			"response": []
+		},
+		{
+			"name": "Persecution - Get All (Filtered)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/Persecution/GetAllF?idDemon={{demonId}}&idSoul={{soulId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"Persecution",
+						"GetAllF"
+					],
+					"query": [
+						{ "key": "idDemon", "value": "{{demonId}}", "description": "Filtrar por ID do Demon" },
+						{ "key": "idSoul", "value": "{{soulId}}", "description": "Filtrar por ID da Soul" }
+					]
+				},
+				"description": "Lista perseguições com filtros opcionais"
+			},
+			"response": []
+		},
+		{
+			"name": "Sin - Get All",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/Sin",
+					"host": ["{{baseUrl}}"],
+					"path": ["api", "Sin"]
+				},
+				"description": "Lista todos os pecados"
+			},
+			"response": []
+		},
+		{
+			"name": "Sin - Get By ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/Sin/{{sinId}}",
+					"host": ["{{baseUrl}}"],
+					"path": ["api", "Sin", "{{sinId}}"]
+				},
+				"description": "Busca pecado por ID"
+			},
+			"response": []
+		},
+		{
+			"name": "Sin - Create",
+			"request": {
+				"method": "POST",
+				"header": [{"key": "Content-Type", "value": "application/json"}],
+				"body": {"mode": "raw", "raw": "{\n  \"sinName\": \"Greed\",\n  \"sinSeverity\": \"high\"\n}"},
+				"url": {
+					"raw": "{{baseUrl}}/api/Sin",
+					"host": ["{{baseUrl}}"],
+					"path": ["api", "Sin"]
+				},
+				"description": "Cria um novo pecado"
+			},
+			"response": []
+		},
+		{
+			"name": "Sin - Delete",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/Sin/{{sinId}}",
+					"host": ["{{baseUrl}}"],
+					"path": ["api", "Sin", "{{sinId}}"]
+				},
+				"description": "Deleta pecado por ID"
+			},
+			"response": []
+		},
+		{
+			"name": "Sin - Filter",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/Sin/filter?idSin={{sinId}}&severity=high",
+					"host": ["{{baseUrl}}"],
+					"path": ["api", "Sin", "filter"],
+					"query": [
+						{"key": "idSin", "value": "{{sinId}}", "description": "Filtrar por ID do pecado"},
+						{"key": "severity", "value": "high", "description": "Filtrar por severidade (low|medium|high|critical)"}
+					]
+				},
+				"description": "Lista pecados com filtros"
+			},
+			"response": []
+		},
+		{
+			"name": "Sin - By Severity",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/Sin/BySeverity",
+					"host": ["{{baseUrl}}"],
+					"path": ["api", "Sin", "BySeverity"]
+				},
+				"description": "Resumo de pecados por severidade"
+			},
+			"response": []
+		},
+		{
+			"name": "Sin - Ordered By Severity",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/Sin/OrderedBySeverity",
+					"host": ["{{baseUrl}}"],
+					"path": ["api", "Sin", "OrderedBySeverity"]
+				},
+				"description": "Lista pecados ordenados por severidade"
+			},
+			"response": []
+		},
+		{
+			"name": "Soul - Create",
+			"request": {
+				"method": "POST",
+				"header": [{"key": "Content-Type", "value": "application/json"}],
+				"body": {"mode": "raw", "raw": "{\n  \"cavernId\": \"{{cavernId}}\",\n  \"name\": \"John Doe\",\n  \"description\": \"A lost soul\"\n}"},
+				"url": {
+					"raw": "{{baseUrl}}/api/Soul",
+					"host": ["{{baseUrl}}"],
+					"path": ["api", "Soul"]
+				},
+				"description": "Cria uma nova alma"
+			},
+			"response": []
+		},
+		{
+			"name": "Soul - Bulk Create",
+			"request": {
+				"method": "POST",
+				"header": [{"key": "Content-Type", "value": "application/json"}],
+				"body": {"mode": "raw", "raw": "[\n  { \n    \"cavernId\": \"{{cavernId}}\",\n    \"name\": \"Alice\",\n    \"description\": \"Brave soul\"\n  },\n  { \n    \"cavernId\": null,\n    \"name\": \"Bob\",\n    \"description\": \"Curious soul\"\n  }\n]"},
+				"url": {
+					"raw": "{{baseUrl}}/api/Soul/bulk",
+					"host": ["{{baseUrl}}"],
+					"path": ["api", "Soul", "bulk"]
+				},
+				"description": "Cria várias almas"
+			},
+			"response": []
+		},
+		{
+			"name": "Soul - Get All",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/Soul",
+					"host": ["{{baseUrl}}"],
+					"path": ["api", "Soul"]
+				},
+				"description": "Lista todas as almas"
+			},
+			"response": []
+		},
+		{
+			"name": "Soul - Get By ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/Soul/{{soulId}}",
+					"host": ["{{baseUrl}}"],
+					"path": ["api", "Soul", "{{soulId}}"]
+				},
+				"description": "Busca alma por ID"
+			},
+			"response": []
+		},
+		{
+			"name": "Soul - Filter",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/Soul/filter?cavernId={{cavernId}}&level=Superior&description=Brave",
+					"host": ["{{baseUrl}}"],
+					"path": ["api", "Soul", "filter"],
+					"query": [
+						{"key": "cavernId", "value": "{{cavernId}}", "description": "Filtrar por ID da caverna"},
+						{"key": "level", "value": "Superior", "description": "Nível do inferno (Inferior|Medio|Superior)"},
+						{"key": "description", "value": "Brave", "description": "Filtrar por descrição"}
+					]
+				},
+				"description": "Lista almas com filtros"
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://localhost:7032",
+			"type": "string"
+		},
+		{
+			"key": "demonId",
+			"value": "00000000-0000-0000-0000-000000000000",
+			"type": "string"
+		},
+		{
+			"key": "soulId",
+			"value": "00000000-0000-0000-0000-000000000000",
+			"type": "string"
+		},
+		{
+			"key": "sinId",
+			"value": "00000000-0000-0000-0000-000000000000",
+			"type": "string"
+		},
+		{
+			"key": "cavernId",
+			"value": "00000000-0000-0000-0000-000000000000",
+			"type": "string"
+		},
+		{
+			"key": "categoryId",
+			"value": "00000000-0000-0000-0000-000000000000",
+			"type": "string"
+		}
+	]
+}

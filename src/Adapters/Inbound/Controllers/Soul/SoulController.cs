@@ -20,7 +20,7 @@ public class SoulController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] SoulRequest request)
+    public async Task<IActionResult> Create([FromBody] SoulInput input)
     {
         _logger.LogInformation("received request to create Soul");
         if (!ModelState.IsValid)
@@ -28,7 +28,7 @@ public class SoulController : ControllerBase
             return BadRequest(new APIResponse<SoulResponse>("invalid input provided"));
         }
 
-        var (response, message) = await _soulUseCase.CreateSoul(request);
+        var (response, message) = await _soulUseCase.CreateSoul(input);
         return CreatedAtAction(
             nameof(Create),
             new { id = response.IdSoul },
@@ -37,7 +37,7 @@ public class SoulController : ControllerBase
     }
 
     [HttpPost("bulk")]
-    public async Task<IActionResult> CreateMany([FromBody] List<SoulRequest> inputs)
+    public async Task<IActionResult> CreateMany([FromBody] List<SoulInput> inputs)
     {
         _logger.LogInformation($"received request to create {inputs?.Count ?? 0} souls");
         if (inputs == null || inputs.Count == 0)

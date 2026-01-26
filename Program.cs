@@ -4,11 +4,14 @@ using Inferno.src.Adapters.Outbound.Persistence.Repositories.Category;
 using Inferno.src.Adapters.Outbound.Persistence.Repositories.Persecution;
 using Inferno.src.Adapters.Outbound.Persistence.Repositories.Sin;
 using Inferno.src.Adapters.Outbound.Persistence.Repositories.Soul;
+using Inferno.src.Adapters.Outbound.Workers;
 using Inferno.src.Core.Application.UseCases.Category;
 using Inferno.src.Core.Application.UseCases.Demon;
 using Inferno.src.Core.Application.UseCases.GetSinsBySeverity;
+using Inferno.src.Core.Application.UseCases.Services;
 using Inferno.src.Core.Application.UseCases.Sin;
 using Inferno.src.Core.Application.UseCases.Soul;
+using Inferno.src.Core.Domain.Event;
 using Inferno.src.Core.Domain.Interfaces;
 using Inferno.src.Core.Domain.Interfaces.Persecution;
 using Inferno.src.Core.Domain.Interfaces.Repository.Category;
@@ -63,6 +66,14 @@ builder.Services.AddScoped<ISoulUseCase, SoulUseCase>();
 builder.Services.AddScoped<ICategoryUseCase, CategoryUseCase>();
 builder.Services.AddScoped<ISinUseCase, SinUseCase>();
 builder.Services.AddScoped<IGetSinsBySeverity, GetSinsBySeverity>();
+
+//Services
+builder.Services.AddScoped<IEventPublisher, OutBoxEventPublisher>();
+builder.Services.AddScoped<IEventHandler<SinCreatedEvent>, SinCreatedHandler>();
+
+//Hosted
+
+builder.Services.AddHostedService<OutboxDispatcherService>();
 
 //DbContext
 builder.Services.AddDbContext<Inferno.src.Adapters.Outbound.Persistence.HellDbContext>();

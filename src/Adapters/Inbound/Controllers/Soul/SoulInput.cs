@@ -1,18 +1,20 @@
 using System.ComponentModel.DataAnnotations;
+using Inferno.src.Core.Domain.Enums;
 
 namespace Inferno.src.Core.Application.DTOs.Request.Soul
 {
-    public class SoulRequest
+    public class SoulInput
     {
         public Guid? CavernId { get; set; } = null;
 
         [Required(ErrorMessage = "Name is required")]
         public string Name { get; set; } = string.Empty;
         public string? Description { get; set; } = string.Empty;
+        public Severity severity { get; set; } = Severity.critical;
 
-        public SoulRequest() { }
+        public SoulInput() { }
 
-        public SoulRequest(Guid? cavernId, string name, string description)
+        public SoulInput(Guid? cavernId, string name, string description)
         {
             CavernId = cavernId;
             Name = name;
