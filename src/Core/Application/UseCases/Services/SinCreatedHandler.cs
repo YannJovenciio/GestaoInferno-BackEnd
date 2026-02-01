@@ -28,34 +28,66 @@ public class SinCreatedHandler : IEventHandler<SinCreatedEvent>
 
     public async Task HandleAsync(SinCreatedEvent domainEvent, CancellationToken ct)
     {
+        _logger.LogInformation(
+            "SinCreatedHandler.HandleAsync called for Sin {SinId}",
+            domainEvent.SinId
+        );
+
         if (domainEvent.Severity < Severity.high)
         {
-            _logger.LogInformation($"Severity:{domainEvent.Severity} doenst match requirements");
+            _logger.LogInformation($"Severity:{domainEvent.Severity} doesn't match requirements");
             return;
         }
 
-        var soul = (await _soulRepository.GetAllAsync()).FirstOrDefault();
-        var demon = (await _demonRepository.GetAllAsync()).FirstOrDefault();
-        if (soul == null || demon == null)
+        _logger.LogInformation("Fetching all demons, souls, and persecutions...");
+        var demons = await _demonRepository.GetAllAsync();
+        var souls = await _soulRepository.GetAllAsync();
+        var persecutions = await _persecutionRepository.GetAllPersecutions();
+
+        _logger.LogInformation(
+            "Found {DemonCount} demons, {SoulCount} souls, {PersecutionCount} persecutions",
+            demons.Count,
+            souls.Count,
+            persecutions.Count
+        );
+
+        if (!demons.Any() || !souls.Any())
         {
-            _logger.LogWarning("No soul or demon found to assign persecution");
+            _logger.LogWarning("No demons or souls available to assign persecution");
             return;
         }
-        bool alreadyExits = (
-            await _persecutionRepository.GetAllPersecutionWithFilter(demon.IdDemon, soul.IdSoul)
-        ).Any();
 
-        if (!alreadyExits)
+        // pick the first Demon/Soul pair not already used
+        var pair = (
+            from d in demons
+            from s in souls
+            where !persecutions.Any(p => p.IdDemon == d.IdDemon && p.IdSoul == s.IdSoul)
+            select new { Demon = d, Soul = s }
+        ).FirstOrDefault();
+
+        if (pair == null)
         {
-            var persecution = await _persecutionRepository.CreatePersecution(
-                demon.IdDemon,
-                soul.IdSoul
-            );
             _logger.LogInformation(
-                "Persecution created with ids {idDemon},{idSoul}",
-                demon.IdDemon,
-                soul.IdSoul
+                "No available Demon/Soul pair (all pairs already have persecution)"
             );
+            return;
         }
+
+        _logger.LogInformation(
+            "Creating persecution for Demon {DemonId} and Soul {SoulId}",
+            pair.Demon.IdDemon,
+            pair.Soul.IdSoul
+        );
+
+        var persecutionCreated = await _persecutionRepository.CreatePersecution(
+            pair.Demon.IdDemon,
+            pair.Soul.IdSoul
+        );
+
+        _logger.LogInformation(
+            "Persecution created successfully with Demon {DemonId} and Soul {SoulId}",
+            pair.Demon.IdDemon,
+            pair.Soul.IdSoul
+        );
     }
 }

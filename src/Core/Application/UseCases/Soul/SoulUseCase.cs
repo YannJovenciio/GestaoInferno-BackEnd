@@ -1,3 +1,4 @@
+using Inferno.src.Adapters.Inbound.Controllers.Analytics.Soul;
 using Inferno.src.Core.Application.DTOs.Request.Soul;
 using Inferno.src.Core.Application.DTOs.Response.Soul;
 using Inferno.src.Core.Domain.Interfaces.Repository.Souls;
@@ -129,5 +130,6 @@ namespace Inferno.src.Core.Application.UseCases.Soul
 
             return (responses, $"Successfully found {responses.Count} souls for this filter");
         }
+
     }
 }

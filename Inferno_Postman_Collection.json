@@ -1,0 +1,501 @@
+{
+  "info": {
+    "_postman_id": "inferno-crud-api",
+    "name": "Inferno CRUD API",
+    "description": "Coleção de endpoints da API Inferno",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "inferno-api-exporter"
+  },
+  "item": [
+    {
+      "name": "Demon",
+      "item": [
+        {
+          "name": "Create Demon",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Asmodeus\",\n  \"categoryId\": \"{{guid}}\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5218/api/demon",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5218",
+              "path": ["api", "demon"]
+            },
+            "description": "Cria um novo demônio. Retorna 201 Created com ResponseModel<DemonResponse>"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Many Demons",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n    \"name\": \"Demon 1\",\n    \"categoryId\": \"{{guid}}\"\n  },\n  {\n    \"name\": \"Demon 2\",\n    \"categoryId\": \"{{guid}}\"\n  }\n]"
+            },
+            "url": {
+              "raw": "http://localhost:5218/api/demon/CreateMany",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5218",
+              "path": ["api", "demon", "CreateMany"]
+            },
+            "description": "Cria múltiplos demônios em uma única requisição. Retorna 200 OK com ResponseModel<List<DemonResponse>>"
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Demons",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5218/api/demon?pageSize=10&pageNumber=1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5218",
+              "path": ["api", "demon"],
+              "query": [
+                {
+                  "key": "pageSize",
+                  "value": "10",
+                  "disabled": true
+                },
+                {
+                  "key": "pageNumber",
+                  "value": "1",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Retorna todos os demônios cadastrados com paginação opcional"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Demon By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5218/api/demon/{{demonId}}",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5218",
+              "path": ["api", "demon", "{{demonId}}"]
+            },
+            "description": "Obtém um demônio específico pelo ID. Retorna 200 OK ou 404 Not Found"
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Demons With Filters",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5218/api/demon/filter?name=&categoryId={{categoryId}}&createdAt=",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5218",
+              "path": ["api", "demon", "filter"],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "categoryId",
+                  "value": "{{categoryId}}",
+                  "disabled": true
+                },
+                {
+                  "key": "createdAt",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Retorna demônios com filtros opcionais: name, categoryId, createdAt"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Soul",
+      "item": [
+        {
+          "name": "Get All Souls",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5218/api/soul/GetAll",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5218",
+              "path": ["api", "soul", "GetAll"]
+            },
+            "description": "Retorna todas as almas cadastradas"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Soul By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5218/api/soul/Get/{{soulId}}",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5218",
+              "path": ["api", "soul", "Get", "{{soulId}}"]
+            },
+            "description": "Obtém uma alma específica pelo ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Soul",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Alma Perdida\",\n  \"damnationLevel\": 5\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5218/api/soul/Create",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5218",
+              "path": ["api", "soul", "Create"]
+            },
+            "description": "Cria uma alma única"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Many Souls",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n    \"name\": \"Soul 1\",\n    \"CavernId\": \"{{guid}}\"\n  },\n  {\n    \"name\": \"Soul 2\",\n    \"CavernId\": \"{{guid}}\"\n  }\n]"
+            },
+            "url": {
+              "raw": "http://localhost:5218/api/soul/CreateMany",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5218",
+              "path": ["api", "soul", "CreateMany"]
+            },
+            "description": "Cria múltiplas almas em uma única requisição"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Category",
+      "item": [
+        {
+          "name": "Get All Categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5218/api/category/GetAll",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5218",
+              "path": ["api", "category", "Get"]
+            },
+            "description": "Retorna todas as categorias cadastradas"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Category By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5218/api/category/GetById?id={{categoryId}}",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5218",
+              "path": ["api", "category", "GetById"],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "{{categoryId}}"
+                }
+              ]
+            },
+            "description": "Obtém uma categoria específica pelo ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Category",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"CategoryName\": \"FALLEN_ANGEL\",\n }"
+            },
+            "url": {
+              "raw": "http://localhost:5218/api/category/Create",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5218",
+              "path": ["api", "category", "Create"]
+            },
+            "description": "Cria uma nova categoria"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Many Categories",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n  \"CategoryName\": \"FALLEN_ANGEL\",\n  },\n  {\n   \"CategoryName\": \"DEMON\",\n \n  }\n]"
+            },
+            "url": {
+              "raw": "http://localhost:5218/api/category/CreateMany",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5218",
+              "path": ["api", "category", "CreateMany"]
+            },
+            "description": "Cria múltiplas categorias em uma única requisição"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Persecution",
+      "item": [
+        {
+          "name": "Get All Persecutions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5218/api/persecution/GetAll",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5218",
+              "path": ["api", "persecution", "GetAll"]
+            },
+            "description": "Retorna todas as perseguições cadastradas"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Persecution",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idDemon\": \"{{demonId}}\",\n  \"idSoul\": \"{{soulId}}\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5218/api/persecution/CreatePersecution",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5218",
+              "path": ["api", "persecution", "CreatePersecution"]
+            },
+            "description": "Cria uma perseguição entre um demônio e uma alma"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Sin",
+      "item": [
+        {
+          "name": "Get All Sins",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5218/api/sin",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5218",
+              "path": ["api", "sin"]
+            },
+            "description": "Retorna todos os pecados cadastrados. Retorna 200 OK com APIResponse<List<SinResponse>>"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Sin By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5218/api/sin/{{sinId}}",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5218",
+              "path": ["api", "sin", "{{sinId}}"]
+            },
+            "description": "Obtém um pecado específico pelo ID. Retorna 200 OK ou 404 Not Found"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Sins With Filters",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5218/api/sin/filter?idSin={{sinId}}&severity=HIGH",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5218",
+              "path": ["api", "sin", "filter"],
+              "query": [
+                {
+                  "key": "idSin",
+                  "value": "{{sinId}}",
+                  "disabled": true
+                },
+                {
+                  "key": "severity",
+                  "value": "HIGH",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Retorna pecados com filtros opcionais: idSin (Guid), severity (TRIVIAL, LOW, MEDIUM, HIGH, EXTREME)"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Sin",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sinName\": \"Gula\",\n  \"sinSeverity\": \"HIGH\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5218/api/sin",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5218",
+              "path": ["api", "sin"]
+            },
+            "description": "Cria um novo pecado. Retorna 201 Created com APIResponse<SinResponse>"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Sin",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5218/api/sin/{{sinId}}",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5218",
+              "path": ["api", "sin", "{{sinId}}"]
+            },
+            "description": "Deleta um pecado pelo ID. Retorna 200 OK ou 404 Not Found"
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "demonId",
+      "value": "00000000-0000-0000-0000-000000000000",
+      "type": "string",
+      "description": "ID de um demônio existente"
+    },
+    {
+      "key": "soulId",
+      "value": "00000000-0000-0000-0000-000000000000",
+      "type": "string",
+      "description": "ID de uma alma existente"
+    },
+    {
+      "key": "categoryId",
+      "value": "00000000-0000-0000-0000-000000000000",
+      "type": "string",
+      "description": "ID de uma categoria existente"
+    },
+    {
+      "key": "sinId",
+      "value": "00000000-0000-0000-0000-000000000000",
+      "type": "string",
+      "description": "ID de um pecado existente"
+    }
+  ]
+}

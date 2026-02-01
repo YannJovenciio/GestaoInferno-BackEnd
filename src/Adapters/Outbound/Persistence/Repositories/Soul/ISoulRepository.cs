@@ -13,5 +13,6 @@ namespace Inferno.src.Core.Domain.Interfaces.Repository.Souls
             HellEnum? level,
             string? description
         );
+        Task<List<Soul>>GetAllWithSins();
     }
 }

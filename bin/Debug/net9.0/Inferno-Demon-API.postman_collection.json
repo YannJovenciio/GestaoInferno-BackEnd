@@ -620,6 +620,20 @@
 				"description": "Lista almas com filtros"
 			},
 			"response": []
+		},
+		{
+			"name": "Soul Analytics - Recommendations",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/SoulAnalytics",
+					"host": ["{{baseUrl}}"],
+					"path": ["api", "SoulAnalytics"]
+				},
+				"description": "Retorna recomendações/analytics de souls"
+			},
+			"response": []
 		}
 	],
 	"variable": [

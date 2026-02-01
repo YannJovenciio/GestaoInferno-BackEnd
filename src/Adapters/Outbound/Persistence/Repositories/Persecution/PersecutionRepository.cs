@@ -31,7 +31,11 @@ namespace Inferno.src.Adapters.Outbound.Persistence.Repositories.Persecution
 
         public async Task<List<Entity.Persecution>> GetAllPersecutions()
         {
-            var persecutions = await _context.Persecution.AsNoTracking().ToListAsync();
+            var persecutions = await _context
+                .Persecution.Include(p => p.Demon)
+                .Include(p => p.Soul)
+                .AsNoTracking()
+                .ToListAsync();
             return persecutions;
         }
 

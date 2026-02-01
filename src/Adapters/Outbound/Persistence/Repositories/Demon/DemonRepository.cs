@@ -47,11 +47,7 @@ public class DemonRepository : IDemonRepository
 
     public async Task<List<Demon>> GetAllAsync()
     {
-        var demons = await _context
-            .Demons.AsNoTracking()
-            .OrderBy(d => d.DemonName)
-            .ToListAsync();
-
+        var demons = await _context.Demons.AsNoTracking().OrderBy(d => d.DemonName).ToListAsync();
         return demons;
     }
 
@@ -71,5 +67,15 @@ public class DemonRepository : IDemonRepository
             query = query.Where(d => d.CreatedAt.Date == createdAt.Value.Date);
 
         return await query.ToListAsync();
+    }
+
+    public Task<List<Demon>> GetDemonswithPersecution()
+    {
+        var demons = _context
+            .Demons.Include(d => d.Persecutions)
+                .ThenInclude(p => p.Soul)
+            .Include(x => x.Category)
+            .ToListAsync();
+        return demons;
     }
 }

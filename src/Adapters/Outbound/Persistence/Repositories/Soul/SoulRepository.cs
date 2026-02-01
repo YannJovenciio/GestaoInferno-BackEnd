@@ -56,4 +56,15 @@ public class SoulRepository : ISoulRepository
 
         return await query.ToListAsync();
     }
+
+    public async Task<List<Entity.Soul>> GetAllWithSins()
+    {
+        var souls = await _context
+            .Souls.Include(s => s.Realizes)
+            .Include(s => s.Cavern)
+            .Include(s => s.Persecutions)
+                .ThenInclude(p => p.Demon)
+            .ToListAsync();
+        return souls;
+    }
 }

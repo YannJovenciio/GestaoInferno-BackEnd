@@ -5,6 +5,8 @@ using Inferno.src.Adapters.Outbound.Persistence.Repositories.Persecution;
 using Inferno.src.Adapters.Outbound.Persistence.Repositories.Sin;
 using Inferno.src.Adapters.Outbound.Persistence.Repositories.Soul;
 using Inferno.src.Adapters.Outbound.Workers;
+using Inferno.src.Core.Application.Analytics;
+using Inferno.src.Core.Application.Analytics.Soul;
 using Inferno.src.Core.Application.UseCases.Category;
 using Inferno.src.Core.Application.UseCases.Demon;
 using Inferno.src.Core.Application.UseCases.GetSinsBySeverity;
@@ -66,6 +68,8 @@ builder.Services.AddScoped<ISoulUseCase, SoulUseCase>();
 builder.Services.AddScoped<ICategoryUseCase, CategoryUseCase>();
 builder.Services.AddScoped<ISinUseCase, SinUseCase>();
 builder.Services.AddScoped<IGetSinsBySeverity, GetSinsBySeverity>();
+builder.Services.AddScoped<IDemonRecomendationsUseCase, DemonRecomendationsUseCase>();
+builder.Services.AddScoped<ISoulRecommendations, SoulRecommendations>();
 
 //Services
 builder.Services.AddScoped<IEventPublisher, OutBoxEventPublisher>();
