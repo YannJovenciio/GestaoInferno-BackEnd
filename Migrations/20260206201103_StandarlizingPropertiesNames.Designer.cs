@@ -3,6 +3,7 @@ using System;
 using Inferno.src.Adapters.Outbound.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Inferno.Migrations
 {
     [DbContext(typeof(HellDbContext))]
-    partial class HellDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260206201103_StandarlizingPropertiesNames")]
+    partial class StandarlizingPropertiesNames
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.0");

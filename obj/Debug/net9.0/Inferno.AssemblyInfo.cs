@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Inferno")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ddd0dd43be126a77ba65940f1302b4de246d31d3")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+acfd422222b58d2afd8f10d5f384c253034776d2")]
 [assembly: System.Reflection.AssemblyProductAttribute("Inferno")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Inferno")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
