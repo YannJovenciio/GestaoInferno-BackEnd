@@ -7,7 +7,7 @@ public class Demon
 {
     public Guid IdDemon { get; set; }
     public Guid? CategoryId { get; set; } = null;
-    public string DemonName { get; set; }
+    public string? DemonName { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime? UpdatedAt { get; set; }
     public virtual Category Category { get; set; }

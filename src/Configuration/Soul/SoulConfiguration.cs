@@ -11,7 +11,7 @@ namespace Inferno.src.Configuration.Soul
             builder.HasKey(s => s.IdSoul);
             builder.Property(s => s.Description).IsRequired().HasMaxLength(500);
             builder.Property(s => s.Level).IsRequired();
-            builder.Property(s => s.Name).IsRequired().HasMaxLength(100);
+            builder.Property(s => s.SoulName).IsRequired().HasMaxLength(100);
 
             builder
                 .HasOne(s => s.Cavern)

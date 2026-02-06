@@ -9,6 +9,7 @@ namespace Inferno.src.Configuration.Cavern
         public void Configure(EntityTypeBuilder<entity.Cavern> builder)
         {
             builder.HasKey(c => c.IdCavern);
+            builder.Property(c => c.CavernName);
             builder.Property(c => c.Location).IsRequired().HasMaxLength(200);
             builder.Property(c => c.Capacity).IsRequired();
         }

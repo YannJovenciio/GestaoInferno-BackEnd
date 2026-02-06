@@ -1,4 +1,3 @@
-using Inferno.src.Adapters.Inbound.Controllers.Analytics.Soul;
 using Inferno.src.Core.Application.DTOs.Request.Soul;
 using Inferno.src.Core.Application.DTOs.Response.Soul;
 using Inferno.src.Core.Domain.Interfaces.Repository.Souls;
@@ -36,7 +35,7 @@ namespace Inferno.src.Core.Application.UseCases.Soul
                 .Select(s => new SoulResponse(
                     s.IdSoul,
                     s.CavernId ?? Guid.Empty,
-                    s.Name,
+                    s.SoulName,
                     s.Description,
                     s.Level
                 ))
@@ -57,7 +56,7 @@ namespace Inferno.src.Core.Application.UseCases.Soul
                 .Select(s => new SoulResponse(
                     s.IdSoul,
                     s.CavernId ?? Guid.Empty,
-                    s.Name,
+                    s.SoulName,
                     s.Description,
                     s.Level
                 ))
@@ -80,7 +79,7 @@ namespace Inferno.src.Core.Application.UseCases.Soul
                 new SoulResponse(
                     soul.IdSoul,
                     soul.CavernId ?? Guid.Empty,
-                    soul.Name,
+                    soul.SoulName,
                     soul.Description,
                     soul.Level
                 ),
@@ -101,7 +100,7 @@ namespace Inferno.src.Core.Application.UseCases.Soul
                 new SoulResponse(
                     soul.IdSoul,
                     soul.CavernId,
-                    soul.Name,
+                    soul.SoulName,
                     soul.Description,
                     soul.Level
                 ),
@@ -121,7 +120,7 @@ namespace Inferno.src.Core.Application.UseCases.Soul
             var souls = await _context.GetAllWithFilterAsync(cavernId, level, description);
 
             var responses = souls
-                .Select(s => new SoulResponse(s.IdSoul, s.CavernId, s.Name, s.Description, s.Level))
+                .Select(s => new SoulResponse(s.IdSoul, s.CavernId, s.SoulName, s.Description, s.Level))
                 .ToList();
 
             _logger.LogInformation($"successfully  found {responses.Count} souls for this filter");

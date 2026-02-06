@@ -20,7 +20,7 @@ public class SoulRecommendations : ISoulRecommendations
         foreach (var soul in souls)
         {
             var soulId = soul.IdSoul;
-            var soulName = soul.Name;
+            var soulName = soul.SoulName;
             var Level = soul.Level;
             var persecutionCount = soul.Persecutions.Count;
 

@@ -5,7 +5,7 @@ namespace Inferno.src.Core.Domain.Interfaces.UseCases.Soul
 {
     public interface ISoulUseCase
     {
-        Task<(SoulResponse? response, string message)> GetSoulByIdAsync(Guid id);
+        Task<(SoulResponse response, string message)> GetSoulByIdAsync(Guid id);
         Task<(List<SoulResponse>? response, string message)> GetAllSoulsAsync();
         Task<(List<SoulResponse>? response, string message)> CreateManySoulsAsync(
             List<SoulInput> requests

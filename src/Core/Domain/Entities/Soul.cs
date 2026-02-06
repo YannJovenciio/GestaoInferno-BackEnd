@@ -6,7 +6,7 @@ namespace Inferno.src.Core.Domain.Entities;
 public class Soul
 {
     public Guid IdSoul { get; set; }
-    public string Name { get; set; } = string.Empty;
+    public string SoulName { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public HellEnum Level { get; set; } = HellEnum.Inferior;
 
@@ -24,9 +24,9 @@ public class Soul
 
     public Soul() { }
 
-    public Soul(string name, string description, Guid? cavernId = null)
+    public Soul(string soulName, string description, Guid? cavernId = null)
     {
-        Name = name;
+        SoulName = soulName;
         Description = description;
         CavernId = cavernId;
     }

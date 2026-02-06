@@ -31,7 +31,7 @@ public class DemonRecomendationsUseCase : IDemonRecomendationsUseCase
                 .Persecutions.GroupBy(d => d.Soul)
                 .OrderByDescending(d => d.Count())
                 .FirstOrDefault();
-            string mostTorturedSoul = torturedSouls == null ? "N/A" : torturedSouls.Key.Name;
+            string mostTorturedSoul = torturedSouls == null ? "N/A" : torturedSouls.Key.SoulName;
             var recomendation = new DemonRecommendations(
                 demon.IdDemon,
                 demon.DemonName,
