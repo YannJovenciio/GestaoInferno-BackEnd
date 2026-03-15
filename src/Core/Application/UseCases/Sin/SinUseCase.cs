@@ -1,5 +1,5 @@
 using Inferno.src.Adapters.Inbound.Controllers.Sin;
-using Inferno.src.Core.Application.UseCases.Services;
+using Inferno.src.Core.Application.Services.OutBox;
 using Inferno.src.Core.Domain.Enums;
 using Inferno.src.Core.Domain.Event;
 using Inferno.src.Core.Domain.Interfaces.Repository.Sin;

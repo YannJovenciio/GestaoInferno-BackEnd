@@ -1,23 +1,20 @@
-using Inferno.src.Core.Domain.Entities;
+using Entity = Inferno.src.Core.Domain.Entities;
 
-namespace Inferno.src.Core.Domain.Interfaces
+namespace Inferno.src.Adapters.Outbound.Persistence.Repositories.Demon;
+
+public interface IDemonRepository
 {
-    public interface IDemonRepository
-    {
-        Task<Demon> CreateAsync(Demon input);
-        Task<List<Demon>> CreateManyAsync(List<Demon> inputs);
-        Task<Demon> GetByIdAsync(Guid id);
-        Task<List<Demon>> GetAllAsync(int? pageSize, int? pageNumber);
-        Task<List<Demon>> GetAllAsync();
+    Task<Entity.Demon> GetByIdAsync(Guid id);
+    Task<List<Entity.Demon>> GetAllAsync(int? pageSize, int? pageNumber);
+    Task<List<Entity.Demon>> GetAllAsync();
 
-        Task<List<Demon>> GetAllWithFiltersAsync(
-            Guid? categoryId,
-            string? name,
-            DateTime? createdAt
-        );
-        Task<(List<Demon> demons, int totalItems)> GetRecomendations(
-            int? pageSize,
-            int? pageNumber
-        );
-    }
+    Task<List<Entity.Demon>> GetAllWithFiltersAsync(
+        Guid? categoryId,
+        string? name,
+        DateTime? createdAt
+    );
+    Task<(List<Entity.Demon> demons, int totalItems)> GetRecomendations(
+        int? pageSize,
+        int? pageNumber
+    );
 }

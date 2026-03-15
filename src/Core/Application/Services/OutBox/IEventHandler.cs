@@ -1,6 +1,6 @@
 using Inferno.src.Core.Domain.Event;
 
-namespace Inferno.src.Core.Application.UseCases.Services
+namespace Inferno.src.Core.Application.Services.OutBox
 {
     public interface IEventHandler<TEvent>
         where TEvent : IDomainEvent

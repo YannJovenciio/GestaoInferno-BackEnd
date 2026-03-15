@@ -1,6 +1,6 @@
 using System.Text.Json;
 using Inferno.src.Adapters.Outbound.Persistence.Repositories;
-using Inferno.src.Core.Application.UseCases.Services;
+using Inferno.src.Core.Application.Services.OutBox;
 using Inferno.src.Core.Domain.Event;
 
 namespace Inferno.src.Adapters.Outbound.Workers;

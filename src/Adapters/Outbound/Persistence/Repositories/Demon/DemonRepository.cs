@@ -1,7 +1,7 @@
-using Inferno.src.Adapters.Outbound.Persistence.Repositories;
-using Inferno.src.Core.Domain.Entities;
-using Inferno.src.Core.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Entity = Inferno.src.Core.Domain.Entities;
+
+namespace Inferno.src.Adapters.Outbound.Persistence.Repositories.Demon;
 
 public class DemonRepository : IDemonRepository
 {
@@ -12,27 +12,13 @@ public class DemonRepository : IDemonRepository
         _context = context;
     }
 
-    public async Task<Demon> GetByIdAsync(Guid id)
+    public async Task<Entity.Demon> GetByIdAsync(Guid id)
     {
         var demon = await _context.Demons.AsNoTracking().FirstOrDefaultAsync(d => d.IdDemon == id);
         return demon;
     }
 
-    public async Task<Demon> CreateAsync(Demon input)
-    {
-        await _context.Demons.AddAsync(input);
-        await _context.SaveChangesAsync();
-        return input;
-    }
-
-    public async Task<List<Demon>> CreateManyAsync(List<Demon> inputs)
-    {
-        await _context.AddRangeAsync(inputs);
-        await _context.SaveChangesAsync();
-        return inputs;
-    }
-
-    public async Task<List<Demon>> GetAllAsync(int? pageSize, int? pageNumber)
+    public async Task<List<Entity.Demon>> GetAllAsync(int? pageSize, int? pageNumber)
     {
         var demons = await _context
             .Demons.AsNoTracking()
@@ -44,13 +30,13 @@ public class DemonRepository : IDemonRepository
         return demons;
     }
 
-    public async Task<List<Demon>> GetAllAsync()
+    public async Task<List<Entity.Demon>> GetAllAsync()
     {
         var demons = await _context.Demons.AsNoTracking().OrderBy(d => d.DemonName).ToListAsync();
         return demons;
     }
 
-    public async Task<List<Demon>> GetAllWithFiltersAsync(
+    public async Task<List<Entity.Demon>> GetAllWithFiltersAsync(
         Guid? categoryId,
         string? name,
         DateTime? createdAt
@@ -68,7 +54,7 @@ public class DemonRepository : IDemonRepository
         return await query.ToListAsync();
     }
 
-    public async Task<(List<Demon> demons, int totalItems)> GetRecomendations(
+    public async Task<(List<Entity.Demon> demons, int totalItems)> GetRecomendations(
         int? pageSize,
         int? pageNumber
     )

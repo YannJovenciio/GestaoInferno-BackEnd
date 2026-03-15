@@ -9,8 +9,11 @@ public class HellTask
     public string Description { get; private set; } = string.Empty;
     public DateTime CreatedAt { get; private set; }
     public DateTime DeadLine { get; set; }
-    public HellTaskStatus Status { get; private set; } = HellTaskStatus.NotStarted;
+    public HellTaskStatus Status { get; private set; } = HellTaskStatus.Awaiting;
     public int Progress { get; private set; }
+    public DateTime? UpdatedAt { get; set; }
+    public DateTime? CompletedAt { get; set; }
+    public HellTaskPriority Priority { get; set; }
 
     //FK
     public virtual Demon? Demon { get; private set; }
@@ -18,11 +21,12 @@ public class HellTask
 
     public HellTask() { }
 
-    public HellTask(string title, string description, Guid demonId)
+    public HellTask(string title, string description, Guid demonId, HellTaskPriority priority)
     {
         HellTaskId = Guid.NewGuid();
         Title = title;
         Description = description;
+        Priority = priority;
         CreatedAt = DateTime.UtcNow;
         DeadLine = CreatedAt.AddDays(30);
         DemonId = demonId;
@@ -34,10 +38,11 @@ public class HellTask
             throw new InvalidOperationException("Invalid progress provided");
         Progress = newProgress;
         if (Progress == 100)
-            Status = HellTaskStatus.Completed;
+            Status = HellTaskStatus.Submit;
         else if (Progress > 0 && Progress < 100)
-            Status = HellTaskStatus.InProgress;
+            Status = HellTaskStatus.Review;
         else
-            Status = HellTaskStatus.NotStarted;
+            Status = HellTaskStatus.Awaiting;
+        UpdatedAt = DateTime.UtcNow;
     }
 }

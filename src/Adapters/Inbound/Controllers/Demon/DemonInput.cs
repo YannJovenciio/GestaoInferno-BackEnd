@@ -17,10 +17,5 @@ namespace Inferno.src.Core.Application.DTOs.Request.Demon
             DemonName = demonName;
             CategoryId = categoryId;
         }
-
-        public override string ToString()
-        {
-            return $"DemonInput{{DemonName={DemonName}, CategoryId={CategoryId}}}";
-        }
     }
 }

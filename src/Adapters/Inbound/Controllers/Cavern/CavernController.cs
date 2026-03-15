@@ -29,7 +29,7 @@ public class CavernController : Controller
         );
     }
 
-    [HttpPost]
+    [HttpPost("CreateMany")]
     public async Task<IActionResult> CreateManyCavern([FromBody] List<CavernInput> inputs)
     {
         if (inputs == null)

@@ -1,6 +1,6 @@
 using Entity = Inferno.src.Core.Domain.Entities;
 
-namespace Inferno.src.Adapters.Outbound.Persistence.Repositories;
+namespace Inferno.src.Adapters.Outbound.Persistence.HellTask;
 
 public interface IHellTaskRepository
 {
@@ -10,5 +10,11 @@ public interface IHellTaskRepository
         CancellationToken cancellationToken
     );
     Task DeleteAsync(Guid id, CancellationToken cancellationToken);
-    Task<List<Entity.HellTask>> GetAllByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task<List<Entity.HellTask>> GetAllByDemonIdAsync(
+        int? pageSize,
+        int? pageNumber,
+        Guid id,
+        CancellationToken cancellationToken
+    );
+    Task<Entity.HellTask> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 }

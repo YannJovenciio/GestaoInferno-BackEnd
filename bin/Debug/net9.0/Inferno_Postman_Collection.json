@@ -559,6 +559,116 @@
           "response": []
         }
       ]
+    },
+    {
+      "name": "HellTask",
+      "item": [
+        {
+          "name": "Create HellTask",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Torture the sinner\",\n  \"description\": \"Make them suffer\",\n  \"demonId\": \"{{demonId}}\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5218/api/helltask",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5218",
+              "path": ["api", "helltask"]
+            },
+            "description": "Cria uma nova HellTask. Retorna 201 Created com APIResponse<HellTaskResponse>"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Many HellTasks",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n    \"title\": \"Task 1\",\n    \"description\": \"desc\",\n    \"demonId\": \"{{demonId}}\"\n  }\n]"
+            },
+            "url": {
+              "raw": "http://localhost:5218/api/helltask/CreateMany",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5218",
+              "path": ["api", "helltask", "CreateMany"]
+            },
+            "description": "Cria múltiplas HellTasks"
+          },
+          "response": []
+        },
+        {
+          "name": "Get All By DemonId",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5218/api/helltask?id={{demonId}}&pageSize=10&pageNumber=1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5218",
+              "path": ["api", "helltask"],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "{{demonId}}",
+                  "disabled": true
+                },
+                {
+                  "key": "pageSize",
+                  "value": "10",
+                  "disabled": true
+                },
+                {
+                  "key": "pageNumber",
+                  "value": "1",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Retorna tasks por demonId com paginação opcional"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete HellTask",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5218/api/helltask?id={{hellTaskId}}",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5218",
+              "path": ["api", "helltask"],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "{{hellTaskId}}"
+                }
+              ]
+            },
+            "description": "Deleta uma HellTask pelo id (query param)"
+          },
+          "response": []
+        }
+      ]
     }
   ],
   "variable": [
@@ -585,6 +695,13 @@
       "value": "00000000-0000-0000-0000-000000000000",
       "type": "string",
       "description": "ID de um pecado existente"
+    }
+    ,
+    {
+      "key": "hellTaskId",
+      "value": "00000000-0000-0000-0000-000000000000",
+      "type": "string",
+      "description": "ID de uma HellTask existente"
     }
   ]
 }

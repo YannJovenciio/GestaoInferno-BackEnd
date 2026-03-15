@@ -3,7 +3,7 @@ using Inferno.src.Adapters.Outbound.Persistence.Repositories;
 using Inferno.src.Core.Domain.Entities;
 using Inferno.src.Core.Domain.Event;
 
-namespace Inferno.src.Core.Application.UseCases.Services;
+namespace Inferno.src.Core.Application.Services.OutBox;
 
 public class OutBoxEventPublisher : IEventPublisher
 {

@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\yjovencio\\WebAPI\\GestaoInferno-BackEnd\\Inferno.csproj": {}
+    "C:\\Users\\YanJo\\TreinoCRUD\\Inferno\\Inferno.csproj": {}
   },
   "projects": {
-    "C:\\Users\\yjovencio\\WebAPI\\GestaoInferno-BackEnd\\Inferno.csproj": {
+    "C:\\Users\\YanJo\\TreinoCRUD\\Inferno\\Inferno.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\yjovencio\\WebAPI\\GestaoInferno-BackEnd\\Inferno.csproj",
+        "projectUniqueName": "C:\\Users\\YanJo\\TreinoCRUD\\Inferno\\Inferno.csproj",
         "projectName": "Inferno",
-        "projectPath": "C:\\Users\\yjovencio\\WebAPI\\GestaoInferno-BackEnd\\Inferno.csproj",
-        "packagesPath": "C:\\Users\\yjovencio\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\yjovencio\\WebAPI\\GestaoInferno-BackEnd\\obj\\",
+        "projectPath": "C:\\Users\\YanJo\\TreinoCRUD\\Inferno\\Inferno.csproj",
+        "packagesPath": "C:\\Users\\YanJo\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\YanJo\\TreinoCRUD\\Inferno\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\yjovencio\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\YanJo\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
@@ -44,6 +44,14 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "dependencies": {
+            "BCrypt.Net-Next": {
+              "target": "Package",
+              "version": "[4.1.0, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[9.0.7, )"
+            },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[9.0.7, )"
@@ -82,7 +90,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.303/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

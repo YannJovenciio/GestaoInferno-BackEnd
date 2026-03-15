@@ -1,9 +1,5 @@
 using Inferno.src.Adapters.Inbound.Controllers.Demon;
-using Inferno.src.Core.Application.DTOs;
-using Inferno.src.Core.Application.DTOs.Request.Demon;
-using Inferno.src.Core.Domain.Interfaces;
-using Inferno.src.Core.Domain.Interfaces.UseCases.Demon;
-using Entity = Inferno.src.Core.Domain.Entities;
+using Inferno.src.Adapters.Outbound.Persistence.Repositories.Demon;
 
 namespace Inferno.src.Core.Application.UseCases.Demon
 {
@@ -18,33 +14,6 @@ namespace Inferno.src.Core.Application.UseCases.Demon
             _logger = logger;
         }
 
-        public async Task<(DemonResponse? response, string message)> CreateAsync(DemonInput input)
-        {
-            var demon = new Entity.Demon(input.DemonName, input.CategoryId);
-            _logger.LogInformation($"Creating demon entity: {demon}");
-            await _context.CreateAsync(demon);
-            return (
-                new DemonResponse(demon.IdDemon, demon.DemonName, demon.CategoryId.Value),
-                "Demon created sucessfuly"
-            );
-        }
-
-        public async Task<(List<DemonResponse>? responses, string message)> CreateManyAsync(
-            List<DemonInput> inputs
-        )
-        {
-            if (inputs == null || inputs.Count == 0)
-            {
-                return (null, "No demons provided");
-            }
-            var demon = inputs.Select(d => new Entity.Demon(d.DemonName, d.CategoryId)).ToList();
-            await _context.CreateManyAsync(demon);
-            List<DemonResponse> responses = demon
-                .Select(d => new DemonResponse(d.IdDemon, d.DemonName, d.CategoryId.Value))
-                .ToList();
-            return (responses, "Criado com sucesso");
-        }
-
         public async Task<(DemonResponse? response, string message)> GetByIdAsync(Guid id)
         {
             var demon = await _context.GetByIdAsync(id);
@@ -52,7 +21,12 @@ namespace Inferno.src.Core.Application.UseCases.Demon
             {
                 return (null, $"Demon with id {id} not found");
             }
-            DemonResponse response = new(demon.IdDemon, demon.DemonName, demon.CategoryId.Value);
+            DemonResponse response = new(
+                demon.IdDemon,
+                demon.DemonName!,
+                demon.Category,
+                demon.CategoryId!.Value
+            );
             return (response, "Demon found sucessfuly");
         }
 
@@ -63,7 +37,12 @@ namespace Inferno.src.Core.Application.UseCases.Demon
         {
             var demons = await _context.GetAllAsync(pageSize, pageNumber);
             var response = demons
-                .Select(d => new DemonResponse(d.IdDemon, d.DemonName, d.CategoryId.Value))
+                .Select(d => new DemonResponse(
+                    d.IdDemon,
+                    d.DemonName!,
+                    d.Category,
+                    d.CategoryId!.Value
+                ))
                 .ToList();
             if (response.Count == 0)
             {
@@ -86,7 +65,12 @@ namespace Inferno.src.Core.Application.UseCases.Demon
 
             var demons = await _context.GetAllWithFiltersAsync(categoryId, name, createdAt);
             var responses = demons
-                .Select(d => new DemonResponse(d.IdDemon, d.DemonName, d.CategoryId.Value))
+                .Select(d => new DemonResponse(
+                    d.IdDemon,
+                    d.DemonName!,
+                    d.Category,
+                    d.CategoryId!.Value
+                ))
                 .ToList();
 
             if (responses.Count == 0)
@@ -108,8 +92,8 @@ namespace Inferno.src.Core.Application.UseCases.Demon
                 .Select(g => new DemonOrderedByCategory(
                     g.Key,
                     g.Count(),
-                    (g.Count() / (double)demons.Count) * 100,
-                    g.Select(S => S.Category).ToList()
+                    g.Count() / (double)demons.Count * 100,
+                    [.. g.Select(S => S.Category)]
                 ))
                 .OrderBy(x => x.DemonCount)
                 .ToList();

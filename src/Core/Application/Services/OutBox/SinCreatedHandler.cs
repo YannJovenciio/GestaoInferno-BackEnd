@@ -1,10 +1,10 @@
+using Inferno.src.Adapters.Outbound.Persistence.Repositories.Demon;
 using Inferno.src.Core.Domain.Enums;
 using Inferno.src.Core.Domain.Event;
-using Inferno.src.Core.Domain.Interfaces;
 using Inferno.src.Core.Domain.Interfaces.Persecution;
 using Inferno.src.Core.Domain.Interfaces.Repository.Souls;
 
-namespace Inferno.src.Core.Application.UseCases.Services;
+namespace Inferno.src.Core.Application.Services.OutBox;
 
 public class SinCreatedHandler : IEventHandler<SinCreatedEvent>
 {

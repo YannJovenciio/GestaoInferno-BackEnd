@@ -9,5 +9,8 @@ public record HellTaskResponse(
     DateTime CreatedAt,
     DateTime DeadLine,
     HellTaskStatus Status,
-    int Progress
+    int Progress,
+    HellTaskPriority Priority,
+    DateTime? UpdatedAt,
+    DateTime? CompletedAt
 );

@@ -1,3 +1,4 @@
+using Inferno.src.Core.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Entity = Inferno.src.Core.Domain.Entities;
 using EntityM = Inferno.src.Core.Domain.Entities.ManyToMany;
@@ -16,6 +17,10 @@ public class HellDbContext : DbContext
     public DbSet<Entity.OutBoxEvent> OutBoxEvent { get; set; }
     public DbSet<Entity.Image> Image { get; set; }
     public DbSet<Entity.HellTask> HellTasks { get; set; }
+    public DbSet<Role> Roles { get; set; }
+    public DbSet<Client> Clients { get; set; }
+    public DbSet<SigninKey> SigninKeys { get; set; }
+    public DbSet<DemonRole> DemonRoles { get; set; }
     public string DbPath { get; }
 
     public HellDbContext(DbContextOptions<HellDbContext> options)

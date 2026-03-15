@@ -71,6 +71,10 @@ namespace Inferno.Migrations
                         .HasColumnType("TEXT")
                         .HasColumnName("CreatedAt");
 
+                    b.Property<string>("DemonEmail")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("DemonName")
                         .IsRequired()
                         .HasColumnType("TEXT")
@@ -78,6 +82,10 @@ namespace Inferno.Migrations
 
                     b.Property<int?>("ImageId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("TEXT")
@@ -119,6 +127,9 @@ namespace Inferno.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTime?>("CompletedAt")
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 
@@ -133,6 +144,9 @@ namespace Inferno.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("Priority")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("Progress")
                         .HasColumnType("INTEGER");
 
@@ -141,6 +155,9 @@ namespace Inferno.Migrations
 
                     b.Property<string>("Title")
                         .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("TEXT");
 
                     b.HasKey("HellTaskId");
@@ -293,6 +310,135 @@ namespace Inferno.Migrations
                     b.ToTable("Souls");
                 });
 
+            modelBuilder.Entity("Inferno.src.Core.Domain.Models.Client", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ClientId")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ClientURL")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Clients");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ClientId = "Client1",
+                            ClientURL = "https://client1.com",
+                            Name = "Client Application 1"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ClientId = "Client2",
+                            ClientURL = "https://client2.com",
+                            Name = "Client Application 2"
+                        });
+                });
+
+            modelBuilder.Entity("Inferno.src.Core.Domain.Models.DemonRole", b =>
+                {
+                    b.Property<Guid>("DemonId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("DemonId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("DemonRoles");
+                });
+
+            modelBuilder.Entity("Inferno.src.Core.Domain.Models.Role", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Role", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Admin Role",
+                            Name = "Admin"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Editor Role",
+                            Name = "Editor"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "Demon Role",
+                            Name = "Demon"
+                        });
+                });
+
+            modelBuilder.Entity("Inferno.src.Core.Domain.Models.SigninKey", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("KeyId")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PrivateKey")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PublicKey")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SigninKeys");
+                });
+
             modelBuilder.Entity("Inferno.src.Core.Domain.Entities.Demon", b =>
                 {
                     b.HasOne("Inferno.src.Core.Domain.Entities.Category", "Category")
@@ -379,6 +525,25 @@ namespace Inferno.Migrations
                     b.Navigation("Cavern");
                 });
 
+            modelBuilder.Entity("Inferno.src.Core.Domain.Models.DemonRole", b =>
+                {
+                    b.HasOne("Inferno.src.Core.Domain.Entities.Demon", "Demon")
+                        .WithMany("DemonRoles")
+                        .HasForeignKey("DemonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Inferno.src.Core.Domain.Models.Role", "Role")
+                        .WithMany("DemonRoles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Demon");
+
+                    b.Navigation("Role");
+                });
+
             modelBuilder.Entity("Inferno.src.Core.Domain.Entities.Category", b =>
                 {
                     b.Navigation("Demons");
@@ -391,6 +556,8 @@ namespace Inferno.Migrations
 
             modelBuilder.Entity("Inferno.src.Core.Domain.Entities.Demon", b =>
                 {
+                    b.Navigation("DemonRoles");
+
                     b.Navigation("HellTasks");
 
                     b.Navigation("Persecutions");
@@ -408,6 +575,11 @@ namespace Inferno.Migrations
                     b.Navigation("Realizes");
 
                     b.Navigation("Sins");
+                });
+
+            modelBuilder.Entity("Inferno.src.Core.Domain.Models.Role", b =>
+                {
+                    b.Navigation("DemonRoles");
                 });
 #pragma warning restore 612, 618
         }
