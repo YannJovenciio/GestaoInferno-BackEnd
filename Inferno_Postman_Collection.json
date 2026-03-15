@@ -11,56 +11,6 @@
       "name": "Demon",
       "item": [
         {
-          "name": "Create Demon",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"name\": \"Asmodeus\",\n  \"categoryId\": \"{{guid}}\"\n}"
-            },
-            "url": {
-              "raw": "http://localhost:5218/api/demon",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "5218",
-              "path": ["api", "demon"]
-            },
-            "description": "Cria um novo demônio. Retorna 201 Created com ResponseModel<DemonResponse>"
-          },
-          "response": []
-        },
-        {
-          "name": "Create Many Demons",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "[\n  {\n    \"name\": \"Demon 1\",\n    \"categoryId\": \"{{guid}}\"\n  },\n  {\n    \"name\": \"Demon 2\",\n    \"categoryId\": \"{{guid}}\"\n  }\n]"
-            },
-            "url": {
-              "raw": "http://localhost:5218/api/demon/CreateMany",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "5218",
-              "path": ["api", "demon", "CreateMany"]
-            },
-            "description": "Cria múltiplos demônios em uma única requisição. Retorna 200 OK com ResponseModel<List<DemonResponse>>"
-          },
-          "response": []
-        },
-        {
           "name": "Get All Demons",
           "request": {
             "method": "GET",
@@ -136,6 +86,22 @@
             "description": "Retorna demônios com filtros opcionais: name, categoryId, createdAt"
           },
           "response": []
+        },
+        {
+          "name": "Get Ordered By Category",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5218/api/demon/OrderedByCategory",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5218",
+              "path": ["api", "demon", "OrderedByCategory"]
+            },
+            "description": "Retorna demônios agrupados/ordenados por categoria"
+          },
+          "response": []
         }
       ]
     },
@@ -155,6 +121,22 @@
               "path": ["api", "soul", "GetAll"]
             },
             "description": "Retorna todas as almas cadastradas"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Ordered By Category",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5218/api/demon/OrderedByCategory",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5218",
+              "path": ["api", "demon", "OrderedByCategory"]
+            },
+            "description": "Retorna demônios agrupados/ordenados por categoria"
           },
           "response": []
         },

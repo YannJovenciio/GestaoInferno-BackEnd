@@ -44,7 +44,7 @@ public class DemonController : ControllerBase
     {
         _logger.LogInformation("receveid request to get all demons");
         var (response, message) = await _demonUseCase.GetAllAsync(pageSize, pageNumber);
-        _logger.LogInformation("successfully found {DemonCount} demons", response!.Count);
+        _logger.LogInformation("successfully found {DemonCount} demons", response?.Count ?? 0);
         return Ok(new APIResponse<List<DemonResponse>>(response, message));
     }
 
@@ -56,16 +56,12 @@ public class DemonController : ControllerBase
     )
     {
         _logger.LogInformation(
-            "receveid request do GetAllWithFilters with queries:{Name},{CategoryId},{CreatedAt}",
-            name!,
-            categoryId!,
+            "received request GetAllWithFilters with name:{Name} categoryId:{CategoryId} createdAt:{CreatedAt}",
+            name,
+            categoryId,
             createdAt
         );
-        var (responses, message) = await _demonUseCase.GetAllWithFiltersAsync(
-            categoryId ?? null,
-            name ?? null,
-            createdAt ?? null
-        );
+        var (responses, message) = await _demonUseCase.GetAllWithFiltersAsync(categoryId, name, createdAt);
         return Ok(new APIResponse<List<DemonResponse>>(responses!, message));
     }
 
