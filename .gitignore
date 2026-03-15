@@ -1,0 +1,22 @@
+# Ignore build outputs
+/bin/
+/obj/
+
+# IDE / editor
+.vs/
+.vscode/
+*.user
+*.suo
+
+# Binaries and debug
+*.exe
+*.dll
+*.pdb
+apphost.*
+*.runtimeconfig.json
+
+# OS
+.DS_Store
+
+# Keep Postman collection and source files tracked
+!Inferno_Postman_Collection.json

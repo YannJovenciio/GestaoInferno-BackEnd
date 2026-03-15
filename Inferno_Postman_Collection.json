@@ -106,6 +106,61 @@
       ]
     },
     {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"Pa$$w0rd\",\n  \"clientId\": \"inferno-ui\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5218/api/auth/login",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5218",
+              "path": ["api", "auth", "login"]
+            },
+            "description": "Autenticação: gera token JWT (body: Email, Password, ClientId)"
+          },
+          "response": []
+        },
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoryId\": \"{{categoryId}}\",\n  \"demonName\": \"Azazel\",\n  \"email\": \"azazel@example.com\",\n  \"password\": \"Pa$$w0rd\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5218/api/auth/Register",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5218",
+              "path": ["api", "auth", "Register"]
+            },
+            "description": "Registra um novo demon (CategoryId, DemonName, Email, Password)"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
       "name": "Soul",
       "item": [
         {
