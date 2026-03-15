@@ -11,48 +11,42 @@ public class AuthUseCase(IAuthRepository context, ITokenService tokenService) : 
     private readonly IAuthRepository _context = context;
     private readonly ITokenService _tokenService = tokenService;
 
-    public async Task<object> ExecuteAsync(LoginDto loginDto)
+    public async Task<AuthResponse> ExecuteAsync(LoginDto loginDto)
     {
-        // Validate client
         var client = await _context.GetClientByIdAsync(loginDto.ClientId);
         if (client == null)
-        {
             throw new UnauthorizedAccessException("Invalid client credentials.");
-        }
 
-        // Validate user
         var user = await _context.GetDemonByEmailAsync(loginDto.Email);
         if (user == null)
-        {
             throw new UnauthorizedAccessException("Invalid credentials.");
-        }
 
-        // Verify password
         bool isPasswordValid = BCrypt.Net.BCrypt.Verify(loginDto.Password, user.Password);
         if (!isPasswordValid)
-        {
             throw new UnauthorizedAccessException("Invalid credentials.");
-        }
 
-        // Get active signing key
         var signingKey = await _context.GetActiveSigningKeyAsync();
         if (signingKey == null)
-        {
             throw new InvalidOperationException("No active signing key available.");
-        }
 
-        // Generate token
         var token = _tokenService.GenerateToken(user, client, signingKey);
 
-        return new { Token = token };
+        var demonResponse = new DemonResponse(
+            user.IdDemon,
+            user.DemonName,
+            user.Category,
+            user.CategoryId ?? Guid.Empty
+        );
+
+        return new AuthResponse(token, demonResponse, "Login successful");
     }
 
     public Task<bool> ExistsAsync(string demonEmail)
     {
-        throw new NotImplementedException();
+        return _context.ExistsAsync(demonEmail);
     }
 
-    public async Task<(DemonResponse? response, string message)> RegisterAsync(RegisterDto input)
+    public async Task<AuthResponse> RegisterAsync(RegisterDto input)
     {
         string hashedPassword = BCrypt.Net.BCrypt.HashPassword(input.Password);
         var demon = new Entity.Demon
@@ -60,17 +54,18 @@ public class AuthUseCase(IAuthRepository context, ITokenService tokenService) : 
             IdDemon = Guid.NewGuid(),
             DemonName = input.DemonName,
             CategoryId = input.CategoryId,
+            DemonEmail = input.Email,
             Password = hashedPassword,
         };
         await _context.RegisterAsync(demon);
-        return (
-            new DemonResponse(
-                demon.IdDemon,
-                demon.DemonName,
-                demon.Category,
-                demon.CategoryId ?? Guid.Empty
-            ),
-            "Demon created sucessfuly"
+
+        var demonResponse = new DemonResponse(
+            demon.IdDemon,
+            demon.DemonName,
+            demon.Category,
+            demon.CategoryId ?? Guid.Empty
         );
+
+        return new AuthResponse(null, demonResponse!, "Demon created successfully. Please login.");
     }
 }

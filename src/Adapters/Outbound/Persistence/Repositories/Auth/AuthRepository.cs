@@ -1,4 +1,3 @@
-using Inferno.src.Adapters.Inbound.Controllers.JWTAuthServer;
 using Inferno.src.Core.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Entity = Inferno.src.Core.Domain.Entities;
@@ -49,5 +48,10 @@ public class AuthRepository : IAuthRepository
         await _context.Demons.AddAsync(demon);
         await _context.SaveChangesAsync();
         return demon;
+    }
+
+    public Task<bool> ExistsAsync(string demonEmail)
+    {
+        return _context.Demons.AnyAsync(d => d.DemonEmail.ToLower() == demonEmail.ToLower());
     }
 }

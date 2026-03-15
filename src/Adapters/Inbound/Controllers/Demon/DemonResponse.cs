@@ -8,7 +8,6 @@ public class DemonResponse
     public string? DemonName { get; set; }
     public Guid CategoryId { get; set; }
     public Entity.Category? Category { get; set; }
-    public DateTime Birth { get; set; }
 
     public DemonResponse(Guid idDemon, string demonName, Entity.Category? category, Guid categoryId)
     {

@@ -1,5 +1,4 @@
 using Inferno.src.Adapters.Outbound.Persistence.Repositories.Demon;
-using Inferno.src.Core.Domain.Enums;
 using Inferno.src.Core.Domain.Event;
 using Inferno.src.Core.Domain.Interfaces.Persecution;
 using Inferno.src.Core.Domain.Interfaces.Repository.Souls;
@@ -33,23 +32,9 @@ public class SinCreatedHandler : IEventHandler<SinCreatedEvent>
             domainEvent.SinId
         );
 
-        if (domainEvent.Severity < Severity.high)
-        {
-            _logger.LogInformation($"Severity:{domainEvent.Severity} doesn't match requirements");
-            return;
-        }
-
-        _logger.LogInformation("Fetching all demons, souls, and persecutions...");
         var demons = await _demonRepository.GetAllAsync();
         var souls = await _soulRepository.GetAllAsync();
         var persecutions = await _persecutionRepository.GetAllPersecutions();
-
-        _logger.LogInformation(
-            "Found {DemonCount} demons, {SoulCount} souls, {PersecutionCount} persecutions",
-            demons.Count,
-            souls.Count,
-            persecutions.Count
-        );
 
         if (!demons.Any() || !souls.Any())
         {
@@ -73,16 +58,7 @@ public class SinCreatedHandler : IEventHandler<SinCreatedEvent>
             return;
         }
 
-        _logger.LogInformation(
-            "Creating persecution for Demon {DemonId} and Soul {SoulId}",
-            pair.Demon.IdDemon,
-            pair.Soul.IdSoul
-        );
-
-        var persecutionCreated = await _persecutionRepository.CreatePersecution(
-            pair.Demon.IdDemon,
-            pair.Soul.IdSoul
-        );
+        await _persecutionRepository.CreatePersecution(pair.Demon.IdDemon, pair.Soul.IdSoul);
 
         _logger.LogInformation(
             "Persecution created successfully with Demon {DemonId} and Soul {SoulId}",

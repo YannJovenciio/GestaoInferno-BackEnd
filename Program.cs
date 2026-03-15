@@ -111,17 +111,27 @@ builder
             ValidateIssuerSigningKey = true,
             IssuerSigningKeyResolver = (token, securityToken, kid, parameters) =>
             {
-                //Console.WriteLine($"Received Token: {token}");
-                //Console.WriteLine($"Token Issuer: {securityToken.Issuer}");
-                //Console.WriteLine($"Key ID: {kid}");
-                //Console.WriteLine($"Validate Lifetime: {parameters.ValidateLifetime}");
+                // Get signing keys from database
+                var serviceProvider = builder.Services.BuildServiceProvider();
+                var context = serviceProvider.GetRequiredService<HellDbContext>();
+                var signingKeys = context.SigninKeys.Where(k => k.IsActive).ToList();
 
-                var httpClient = new HttpClient();
-                var jwks = httpClient
-                    .GetStringAsync($"{builder.Configuration["Jwt:Issuer"]}/.well-known/jwks.json")
-                    .Result;
-                var keys = new JsonWebKeySet(jwks);
-                return keys.Keys;
+                var rsaKeys = new List<SecurityKey>();
+                foreach (var key in signingKeys)
+                {
+                    try
+                    {
+                        var publicKeyBytes = Convert.FromBase64String(key.PublicKey);
+                        var rsa = System.Security.Cryptography.RSA.Create();
+                        rsa.ImportRSAPublicKey(publicKeyBytes, out _);
+                        rsaKeys.Add(new RsaSecurityKey(rsa) { KeyId = key.KeyId });
+                    }
+                    catch
+                    {
+                        // Skip invalid keys
+                    }
+                }
+                return rsaKeys;
             },
         };
     });

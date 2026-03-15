@@ -1,6 +1,5 @@
-using Inferno.src.Adapters.Inbound.Controllers.Demon;
-using Inferno.src.Adapters.Inbound.Controllers.Model;
 using Inferno.src.Core.Application.UseCases.Auth;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Inferno.src.Adapters.Inbound.Controllers.JWTAuthServer;
@@ -19,6 +18,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("login")]
+    [AllowAnonymous]
     public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
     {
         if (!ModelState.IsValid)
@@ -40,25 +40,26 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("Register")]
+    [AllowAnonymous]
     public async Task<IActionResult> RegisterDemon([FromBody] RegisterDto input)
     {
         _logger.LogInformation("received to RegisterDemon DemonInput:{Input}", input);
 
         if (input == null)
         {
-            return BadRequest(new APIResponse<DemonResponse>("input Invalid"));
+            return BadRequest(new { message = "Input invalid" });
         }
         var exists = await _IAuthUseCase.ExistsAsync(input.Email);
         if (exists)
-            return Conflict(new APIResponse<DemonResponse>("Demon with this email already exists"));
+            return Conflict(new { message = "Demon with this email already exists" });
 
-        var (response, message) = await _IAuthUseCase.RegisterAsync(input);
-        _logger.LogInformation("sucessfuly created demon");
+        var response = await _IAuthUseCase.RegisterAsync(input);
+        _logger.LogInformation("successfully created demon");
 
         return CreatedAtAction(
             nameof(RegisterDemon),
-            new { id = response!.IdDemon },
-            new APIResponse<DemonResponse>(response, message)
+            new { id = response.Demon?.IdDemon },
+            response
         );
     }
 }

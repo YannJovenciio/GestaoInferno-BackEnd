@@ -11,4 +11,5 @@ public interface IAuthRepository
     Task<bool> ValidateClientIdAsync(string clientId);
     Task<bool> ValidateDemonAsync(Entity.Demon demon);
     Task<Entity.Demon> RegisterAsync(Entity.Demon demon);
+    public Task<bool> ExistsAsync(string demonEmail);
 }

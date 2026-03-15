@@ -120,7 +120,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"Pa$$w0rd\",\n  \"clientId\": \"inferno-ui\"\n}"
+              "raw": "{\n  \"email\": \"azazel@example.com\",\n  \"password\": \"Pa$$w0rd\",\n  \"clientId\": \"Client1\"\n}"
             },
             "url": {
               "raw": "http://localhost:5218/api/auth/login",
@@ -129,7 +129,7 @@
               "port": "5218",
               "path": ["api", "auth", "login"]
             },
-            "description": "Autenticação: gera token JWT (body: Email, Password, ClientId)"
+            "description": "Autenticação: gera token JWT. ClientIds válidos: 'Client1' ou 'Client2'. Registre um Demon antes de fazer login."
           },
           "response": []
         },
@@ -154,7 +154,7 @@
               "port": "5218",
               "path": ["api", "auth", "Register"]
             },
-            "description": "Registra um novo demon (CategoryId, DemonName, Email, Password)"
+            "description": "Registra um novo Demon. FLUXO: (1) Register primeiro, (2) depois Login com o mesmo email/password e clientId=Client1 ou Client2"
           },
           "response": []
         }

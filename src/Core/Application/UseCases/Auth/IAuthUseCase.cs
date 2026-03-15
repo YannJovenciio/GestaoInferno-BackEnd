@@ -5,7 +5,7 @@ namespace Inferno.src.Core.Application.UseCases.Auth;
 
 public interface IAuthUseCase
 {
-    Task<(DemonResponse? response, string message)> RegisterAsync(RegisterDto input);
-    Task<object> ExecuteAsync(LoginDto loginDto);
+    Task<AuthResponse> RegisterAsync(RegisterDto input);
+    Task<AuthResponse> ExecuteAsync(LoginDto loginDto);
     Task<bool> ExistsAsync(string demonEmail);
 }

@@ -61,7 +61,11 @@ public class DemonController : ControllerBase
             categoryId,
             createdAt
         );
-        var (responses, message) = await _demonUseCase.GetAllWithFiltersAsync(categoryId, name, createdAt);
+        var (responses, message) = await _demonUseCase.GetAllWithFiltersAsync(
+            categoryId,
+            name,
+            createdAt
+        );
         return Ok(new APIResponse<List<DemonResponse>>(responses!, message));
     }
 
